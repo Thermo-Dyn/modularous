@@ -1,0 +1,28 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 20
+#thanks BlazinGulag!
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "draw_card(G.play,G.discard, it*100/play_count,'down', false, v)"
+position = "before"
+payload = '''
+local mode_joker = SMODS.find_card("j_mode_headliner_fix")[1]
+if mode_joker and mode_joker.ability.extra.pinned_card and v.sort_id == mode_joker.ability.extra.pinned_card then
+	draw_card(G.play,G.hand, it*100/play_count,'up', true, v)
+else
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "draw_card(G.play,G.discard, it*100/play_count,'down', false, v)"
+position = "after"
+payload = '''
+end
+'''
+match_indent = true
