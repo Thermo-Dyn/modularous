@@ -1,11 +1,21 @@
 MODE_UTIL = {}
 
--- TODO: Load Util
 SMODS.load_file("content/utilities.lua")()
+
+MODE_UTIL.config = SMODS.current_mod.config
 -- TODO: Register Jokers
-SMODS.load_file("content/dankpods.lua")()
+
+if MODE_UTIL.config.dankpods then
+    SMODS.load_file("content/dankpods.lua")()
+end
+
+if MODE_UTIL.config.lcbbs then
 SMODS.load_file("content/lcbbs.lua")()
+end
+
+if MODE_UTIL.config.music then
 SMODS.load_file("content/music.lua")()
+end
 
 SMODS.Atlas {
     key = "ModeJokers",

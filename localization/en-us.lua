@@ -121,7 +121,7 @@ return {
                 -- Do not translate this name! Or, *transliterate* it.
                 -- Here's the IPA transcription: /boːndɛɳ̍ oːg kroːkɑː/
                 text = {
-                    "{C:attention}Destroyed{} cards apply {C:enhanced}Modifiers{}",
+                    "{C:attention}Destroyed{} and {C:enhanced}Modified{}","cards apply {C:enhanced}Modifiers{}",
                     "to random cards in {C:attention}deck{}"
                 }
             },
@@ -234,6 +234,13 @@ return {
     },
 
     misc = {
+        dictionary = {
+            mode_ui_enable_dankpods = "Enable Dankpods Jokers",
+            mode_ui_enable_lcbbs = "Enable Zachtronics Jokers",
+            mode_ui_enable_music = "Enable Music Jokers",
+            mode_ui_enable_extra = "Enable Miscellaneous Jokers",
+            mode_ui_requires_restart = "Requires Resart"
+        },
         labels = {
             mode_now_playing = "Now Playing"
         }

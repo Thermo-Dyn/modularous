@@ -161,3 +161,60 @@ function MODE_UTIL.check_joker_position(card)
         end
     end
 end
+
+
+-- Config UI, thanks paperback!
+-- Create config UI
+SMODS.current_mod.config_tab = function()
+  return {
+    n = G.UIT.ROOT,
+    config = { align = 'cm', padding = 0.05, emboss = 0.05, r = 0.1, colour = G.C.BLACK },
+    nodes = {
+      {
+        n = G.UIT.R,
+        config = { align = 'cm', minh = 1 },
+        nodes = {
+          {
+            n = G.UIT.T,
+            config = {
+              text = localize('mode_ui_requires_restart'),
+              colour = G.C.RED,
+              scale = 0.5
+            }
+          }
+        }
+      },
+      {
+        n = G.UIT.R,
+        config = { align = 'cm' },
+        nodes = {
+          {
+            n = G.UIT.C,
+            nodes = {
+              create_toggle {
+                label = localize('mode_ui_enable_dankpods'),
+                ref_table = MODE_UTIL.config,
+                ref_value = 'dankpods'
+              },
+              create_toggle {
+                label = localize('mode_ui_enable_lcbbs'),
+                ref_table = MODE_UTIL.config,
+                ref_value = 'lcbbs',
+              },
+              create_toggle {
+                label = localize('mode_ui_enable_music'),
+                ref_table = MODE_UTIL.config,
+                ref_value = 'music'
+              },
+              create_toggle {
+                label = localize('mode_ui_enable_extra'),
+                ref_table = MODE_UTIL.config,
+                ref_value = 'extra',
+              }
+            }
+          } 
+        }
+      }
+    }
+  }
+end
