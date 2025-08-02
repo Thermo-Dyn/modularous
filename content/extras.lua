@@ -145,24 +145,36 @@ SMODS.Joker { -- Jimbo Holding 2 Oranges
     end
 }
 
---[[
-SMODS.Joker { --
-    key = "",
+
+SMODS.Joker { -- Quiet, Isn't It?
+    key = "quiet",
     unlocked = true,
     discovered = false,
     atlas = "ModeJokers",
-    rarity = ,
-    blueprint_compat = false,
+    config = { extra = {mult = 0, bonus = 7}},
+    rarity = 2,
+    blueprint_compat = true,
     eternal_compat = true,
     perishable_compat = true,
-    cost = ,
-    pos = { x = , y =  },
+    cost = 6,
+    pos = { x = 4, y = 3 },
     loc_vars = function (self, info_queue, card)
+        return { vars = {card.ability.extra.mult, card.ability.extra.bonus}}
     end,
     calculate = function(self, card, context)
+        if context.open_booster and not context.blueprint_card then
+            card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.bonus
+            return {
+                message = localize { type = 'variable', key = 'a_mult', vars = { card.ability.extra.bonus } },
+                colour = G.C.RED,
+            }
+        end
+        if context.joker_main then
+            return { mult = card.ability.extra.mult }
+        end
     end
 }
-]]
+
 --[[
 SMODS.Joker { --
     key = "",

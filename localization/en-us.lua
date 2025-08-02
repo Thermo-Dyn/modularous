@@ -154,7 +154,7 @@ return {
                     "{C:attention}Apostles{} held in hand",
                     "at end of round",
                     "add {C:money}$#1#{} to cashout",
-                    "resets each ante",
+                    "Resets each ante",
                     "{C:inactive}(Currently {C:money}$#2#{C:inactive})"
                 }
             },
@@ -245,6 +245,15 @@ return {
                     "randomly chooses a",
                     "{C:attention}Positive{} and {C:attention}Negative{} effect",
                     "{C:inactive}(Currently {C:attention}#1#{C:inactive} and {C:attention}#2#{C:inactive}){}"
+                }
+            },
+            j_mode_quiet = {
+                name = "Quiet, Isn't It?",
+                text = {
+                    "Gains {C:red}+#2#{} Mult when",
+                    "Booster pack is opened,",
+                    "Booster packs have {C:attention}0 options",
+                    "{C:inactive}(Currently {C:red}+#1#{C:inactive} Mult)"
                 }
             },
         }

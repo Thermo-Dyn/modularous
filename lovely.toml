@@ -26,3 +26,15 @@ payload = '''
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "local _size = self.ability.extra"
+position = "after"
+payload = '''
+if SMODS.find_card("j_mode_quiet") then
+	_size = 0
+end
+'''
+match_indent = true
