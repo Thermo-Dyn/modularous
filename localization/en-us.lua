@@ -230,6 +230,23 @@ return {
                     "gain a random {C:attention}Enhancement{}"
                 }
             },
+            j_mode_cow_tools = {
+                name = "Cow Tools",
+                text = {
+                    "All played {C:clubs}Club{} cards",
+                    "become {C:attention}Bonus{} cards",
+                    "when scored"
+                }
+            },
+            j_mode_jimbo_holding_2_oranges = {
+                name = "Jimbo Holding 2 Oranges",
+                text = {
+                    "When Blind is selected",
+                    "randomly chooses a",
+                    "{C:attention}Positive{} and {C:attention}Negative{} effect",
+                    "{C:inactive}(Currently {C:attention}#1#{C:inactive} and {C:attention}#2#{C:inactive}){}"
+                }
+            },
         }
     },
 
@@ -239,7 +256,10 @@ return {
             mode_ui_enable_lcbbs = "Enable Zachtronics Jokers",
             mode_ui_enable_music = "Enable Music Jokers",
             mode_ui_enable_extra = "Enable Miscellaneous Jokers",
-            mode_ui_requires_restart = "Requires Resart"
+            mode_ui_requires_restart = "Requires Resart",
+
+
+            mode_k_bonus = "Bonus!"
         },
         labels = {
             mode_now_playing = "Now Playing"

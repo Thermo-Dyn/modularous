@@ -10,11 +10,15 @@ if MODE_UTIL.config.dankpods then
 end
 
 if MODE_UTIL.config.lcbbs then
-SMODS.load_file("content/lcbbs.lua")()
+    SMODS.load_file("content/lcbbs.lua")()
 end
 
 if MODE_UTIL.config.music then
-SMODS.load_file("content/music.lua")()
+    SMODS.load_file("content/music.lua")()
+end
+
+if MODE_UTIL.config.extra then
+    assert(SMODS.load_file("content/extras.lua"))()
 end
 
 SMODS.Atlas {
