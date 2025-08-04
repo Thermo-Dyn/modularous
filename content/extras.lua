@@ -13,14 +13,6 @@ SMODS.Joker { -- Cow Tools
     loc_vars = function (self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_CENTERS.m_bonus
     end,
-    --[[ calculate = function(self, card, context)
-        if context.before and context.individual and context.other_card:is_suit("Clubs") then
-            context.other_card:set_ability(G.P_CENTERS.m_bonus)
-            return {
-                message = "Enhanced!"
-            }
-        end
-    end ]]
     calculate = function(self, card, context)
         if context.before and context.main_eval and not context.blueprint then
             local clubs = 0
@@ -47,17 +39,17 @@ SMODS.Joker { -- Cow Tools
 }
 
 --[[
-SMODS.Joker { --
-    key = "",
+SMODS.Joker { -- El Zoomo!
+    key = "el_zoomo",
     unlocked = true,
     discovered = false,
     atlas = "ModeJokers",
-    rarity = ,
-    blueprint_compat = false,
+    rarity = 2,
+    blueprint_compat = true,
     eternal_compat = true,
     perishable_compat = true,
-    cost = ,
-    pos = { x = , y =  },
+    cost = 7,
+    pos = { x = 2, y = 3 },
     loc_vars = function (self, info_queue, card)
     end,
     calculate = function(self, card, context)
@@ -176,17 +168,134 @@ SMODS.Joker { -- Quiet, Isn't It?
 }
 
 --[[
-SMODS.Joker { --
-    key = "",
+SMODS.Joker { -- Sonic Screwdriver
+    key = "sonic_screwdriver",
     unlocked = true,
     discovered = false,
     atlas = "ModeJokers",
-    rarity = ,
+    rarity = 1,
     blueprint_compat = false,
     eternal_compat = true,
     perishable_compat = true,
-    cost = ,
-    pos = { x = , y =  },
+    cost = 6,
+    pos = { x = 5, y = 3 },
+    loc_vars = function (self, info_queue, card)
+    end,
+    calculate = function(self, card, context)
+    end
+}
+]]
+
+SMODS.Joker { -- Mondassian Upgrade
+    key = "mondassian_upgrade",
+    unlocked = true,
+    discovered = false,
+    atlas = "ModeJokers",
+    rarity = 2,
+    blueprint_compat = false,
+    eternal_compat = true,
+    perishable_compat = true,
+    cost = 7,
+    pos = { x = 6, y = 3 },
+    loc_vars = function (self, info_queue, card)
+    end,
+    calculate = function(self, card, context)
+        if context.check_enhancement then
+            if SMODS.Ranks[context.other_card.base.value].face then
+                return { m_steel = true }
+            end
+            if context.other_card.ability.effect == "Gold Card" or context.other_card:get_seal(false) == "Gold" or card.ability["paperback_gold_clip"] then
+                SMODS.destroy_cards(card)
+            end
+        end
+    end
+}
+
+
+SMODS.Joker { -- Cybermat
+    key = "cybermat",
+    unlocked = true,
+    discovered = false,
+    atlas = "ModeJokers",
+    rarity = 2,
+    blueprint_compat = false,
+    eternal_compat = true,
+    perishable_compat = true,
+    cost = 7,
+    pos = { x = 7, y = 3 },
+    loc_vars = function (self, info_queue, card)
+    end,
+    calculate = function(self, card, context)
+        if context.before and context.main_eval and not context.blueprint then
+            local faces = 0
+            for _, scored_card in ipairs(context.scoring_hand) do
+                if scored_card:is_face() then
+                    faces = faces + 1
+                    scored_card:set_ability('m_steel', nil, true)
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            scored_card:juice_up()
+                            return true
+                        end
+                    }))
+                end
+            end
+            if faces > 0 then
+                return {
+                    message = localize('k_steel'),
+                    colour = G.C.GREY
+                }
+            end
+        end
+    end
+}
+
+--[[
+SMODS.Joker { -- Poor Bonus
+    key = "poor_bonus",
+    unlocked = true,
+    discovered = false,
+    atlas = "ModeJokers",
+    rarity = 2,
+    config = { extra = {
+        h_size = 4
+    }},
+    blueprint_compat = false,
+    eternal_compat = true,
+    perishable_compat = true,
+    cost = 6,
+    pos = { x = 8, y = 3 },
+    loc_vars = function (self, info_queue, card)
+    end,
+    calculate = function(self, card, context)
+    end,
+    update = function (self, card, dt)
+        if not (card.ability.extra.h_size - #G.consumeables.cards + (G.hand.config.last_poll_size or 0) == #G.hand.cards) then
+            local difference = card.ability.extra.h_size - #G.consumeables.cards + (G.hand.config.last_poll_size or 0) - #G.hand.cards
+            G.hand:change_size(difference)
+        end
+    end,
+    add_to_deck = function(self, card, from_debuff)
+        G.hand:change_size(card.ability.extra.h_size - #G.consumeables.cards)
+    end,
+    remove_from_deck = function(self, card, from_debuff)
+        G.hand:change_size(-(card.ability.extra.h_size - #G.consumeables.cards))
+    end
+} ]]
+
+
+--[[
+SMODS.Joker { -- Mystery Play
+    key = "mystery_play",
+    unlocked = true,
+    discovered = false,
+    atlas = "ModeJokers",
+    rarity = 2,
+    blueprint_compat = false,
+    eternal_compat = true,
+    perishable_compat = true,
+    cost = 7,
+    pos = { x = 9, y = 3 },
     loc_vars = function (self, info_queue, card)
     end,
     calculate = function(self, card, context)
@@ -194,89 +303,17 @@ SMODS.Joker { --
 }
 ]]
 --[[
-SMODS.Joker { --
-    key = "",
+SMODS.Joker { -- Smug Jug
+    key = "smug_jug",
     unlocked = true,
     discovered = false,
     atlas = "ModeJokers",
-    rarity = ,
+    rarity = 1,
     blueprint_compat = false,
     eternal_compat = true,
     perishable_compat = true,
-    cost = ,
-    pos = { x = , y =  },
-    loc_vars = function (self, info_queue, card)
-    end,
-    calculate = function(self, card, context)
-    end
-}
-]]
---[[
-SMODS.Joker { --
-    key = "",
-    unlocked = true,
-    discovered = false,
-    atlas = "ModeJokers",
-    rarity = ,
-    blueprint_compat = false,
-    eternal_compat = true,
-    perishable_compat = true,
-    cost = ,
-    pos = { x = , y =  },
-    loc_vars = function (self, info_queue, card)
-    end,
-    calculate = function(self, card, context)
-    end
-}
-]]
---[[
-SMODS.Joker { --
-    key = "",
-    unlocked = true,
-    discovered = false,
-    atlas = "ModeJokers",
-    rarity = ,
-    blueprint_compat = false,
-    eternal_compat = true,
-    perishable_compat = true,
-    cost = ,
-    pos = { x = , y =  },
-    loc_vars = function (self, info_queue, card)
-    end,
-    calculate = function(self, card, context)
-    end
-}
-]]
---[[
-SMODS.Joker { --
-    key = "",
-    unlocked = true,
-    discovered = false,
-    atlas = "ModeJokers",
-    rarity = ,
-    blueprint_compat = false,
-    eternal_compat = true,
-    perishable_compat = true,
-    cost = ,
-    pos = { x = , y =  },
-    loc_vars = function (self, info_queue, card)
-    end,
-    calculate = function(self, card, context)
-    end
-}
-]]
---[[
-SMODS.Joker { --
-    key = "",
-    unlocked = true,
-    discovered = false,
-    atlas = "ModeJokers",
-    rarity = ,
-    blueprint_compat = false,
-    eternal_compat = true,
-    perishable_compat = true,
-    cost = ,
-    pos = { x = , y =  },
+    cost = 5,
+    pos = { x = 0, y = 4 },
     loc_vars = function (self, info_queue, card)
     end,
     calculate = function(self, card, context)

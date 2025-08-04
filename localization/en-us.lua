@@ -256,6 +256,30 @@ return {
                     "{C:inactive}(Currently {C:red}+#1#{C:inactive} Mult)"
                 }
             },
+            j_mode_mondassian_upgrade = {
+                name = "Mondassian Upgrade",
+                text = {
+                    "{C:attention}Face{} cards count as",
+                    "{C:attention}Steel{} cards",
+                    "Destroyed if {C:attention}Gold{}",
+                    "Cards or Seals are"
+                }
+            },
+            j_mode_cybermat = {
+                name = "Cybermat",
+                text = {
+                    "All played {C:attention}Face{} cards",
+                    "Become {C:attention}Steel{} cards",
+                    "when scored"
+                }
+            },
+            j_mode_poor_bonus = {
+                name = "Poor Bonus",
+                text = {
+                    "{C:attention}+#1#{} Hand size",
+                    "{C:attention}-1{} per consumable"
+                }
+            }
         }
     },
 
@@ -266,8 +290,8 @@ return {
             mode_ui_enable_music = "Enable Music Jokers",
             mode_ui_enable_extra = "Enable Miscellaneous Jokers",
             mode_ui_requires_restart = "Requires Resart",
-
-
+            mode_a_discards ="+#1# Discards",
+            mode_k_steel = "Upgrade!",
             mode_k_bonus = "Bonus!"
         },
         labels = {
