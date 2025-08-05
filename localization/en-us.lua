@@ -277,7 +277,7 @@ return {
                 name = "Poor Bonus",
                 text = {
                     "{C:attention}+#1#{} Hand size",
-                    "{C:attention}-1{} per consumable"
+                    "{C:attention}-#2#{} per consumable"
                 }
             }
         }

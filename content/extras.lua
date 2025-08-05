@@ -250,15 +250,16 @@ SMODS.Joker { -- Cybermat
     end
 }
 
---[[
-SMODS.Joker { -- Poor Bonus
+
+--[[ SMODS.Joker { -- Poor Bonus
     key = "poor_bonus",
     unlocked = true,
     discovered = false,
     atlas = "ModeJokers",
     rarity = 2,
     config = { extra = {
-        h_size = 4
+        h_size = 4,
+        h_mod = 1
     }},
     blueprint_compat = false,
     eternal_compat = true,
@@ -266,14 +267,7 @@ SMODS.Joker { -- Poor Bonus
     cost = 6,
     pos = { x = 8, y = 3 },
     loc_vars = function (self, info_queue, card)
-    end,
-    calculate = function(self, card, context)
-    end,
-    update = function (self, card, dt)
-        if not (card.ability.extra.h_size - #G.consumeables.cards + (G.hand.config.last_poll_size or 0) == #G.hand.cards) then
-            local difference = card.ability.extra.h_size - #G.consumeables.cards + (G.hand.config.last_poll_size or 0) - #G.hand.cards
-            G.hand:change_size(difference)
-        end
+        return { vars = {card.ability.extra.h_size, card.ability.extra.h_mod}}
     end,
     add_to_deck = function(self, card, from_debuff)
         G.hand:change_size(card.ability.extra.h_size - #G.consumeables.cards)
@@ -281,8 +275,37 @@ SMODS.Joker { -- Poor Bonus
     remove_from_deck = function(self, card, from_debuff)
         G.hand:change_size(-(card.ability.extra.h_size - #G.consumeables.cards))
     end
-} ]]
+}
 
+local emplace_ref = CardArea.emplace
+---@diagnostic disable-next-line: duplicate-set-field
+function CardArea.emplace(self, card, location, stay_flipped)
+local joker = SMODS.find_card("j_mode_poor_bonus")
+    if next(joker) and self == G.consumeables then
+        G.hand:change_size(-joker[1].ability.extra.h_mod)
+    end
+    return emplace_ref(self, card, location, stay_flipped)
+end
+
+local remove = Card.remove
+---@diagnostic disable-next-line: duplicate-set-field
+function Card.remove(self)
+    local joker = SMODS.find_card("j_mode_poor_bonus")
+    if next(joker) and self.area == G.consumeables then
+        G.hand:change_size(joker[1].ability.extra.h_mod)
+    end
+    return remove(self)
+end
+ ]]
+-- local sell = Card.sell_card
+-- ---@diagnostic disable-next-line: duplicate-set-field
+-- function Card.sell_card(self)
+--     local joker = SMODS.find_card("j_mode_poor_bonus")
+--     if next(joker) and self.area == G.consumeables then
+--         G.hand:change_size(joker[1].ability.extra.h_mod)
+--     end
+--     return sell(self)
+-- end
 
 --[[
 SMODS.Joker { -- Mystery Play
