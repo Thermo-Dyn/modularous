@@ -251,7 +251,7 @@ SMODS.Joker { -- Cybermat
 }
 
 
---[[ SMODS.Joker { -- Poor Bonus
+SMODS.Joker { -- Poor Bonus
     key = "poor_bonus",
     unlocked = true,
     discovered = false,
@@ -296,16 +296,16 @@ function Card.remove(self)
     end
     return remove(self)
 end
- ]]
--- local sell = Card.sell_card
--- ---@diagnostic disable-next-line: duplicate-set-field
--- function Card.sell_card(self)
---     local joker = SMODS.find_card("j_mode_poor_bonus")
---     if next(joker) and self.area == G.consumeables then
---         G.hand:change_size(joker[1].ability.extra.h_mod)
---     end
---     return sell(self)
--- end
+
+local use_consumeable_ref = Card.use_consumeable
+---@diagnostic disable-next-line: duplicate-set-field
+function Card.use_consumeable(self,area,copier)
+    local joker = SMODS.find_card("j_mode_poor_bonus")
+    if next(joker) then
+        G.hand:change_size(joker[1].ability.extra.h_mod)
+    end
+    return use_consumeable_ref(self,area,copier)
+end
 
 --[[
 SMODS.Joker { -- Mystery Play
