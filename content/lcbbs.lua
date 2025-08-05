@@ -50,7 +50,7 @@ SMODS.Joker { -- Malware
     },
     config = { extra = { destroy = false}},
     blueprint_compat = false,
-    eternal_compat = true,
+    eternal_compat = false,
     perishable_compat = true,
     cost = 6,
     pos = { x = 2, y = 1 },

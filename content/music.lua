@@ -408,11 +408,16 @@ SMODS.Joker { -- Blue Monday
 
 SMODS.Edition:take_ownership('foil', -- Blue Monday Foil
     {
+        loc_vars = function (self, info_queue, card)
+            return { vars = {card.edition.extra}}
+        end,
+        config = { extra = 50},
         calculate = function(self, card, context)
-            if next(SMODS.find_card("j_mode_blue_monday")) and (context.post_joker or (context.main_scoring and context.cardarea == G.play)) then
-                return { xchips = 2 }
+            local joker = next(SMODS.find_card("j_mode_blue_monday"))
+            if joker and (context.post_joker or (context.main_scoring and context.cardarea == G.play)) then
+                return { xchips = 2, colour = G.C.BLUE }
             end
-            if context.pre_joker or (context.main_scoring and context.cardarea == G.play) then
+            if not joker and context.pre_joker or (context.main_scoring and context.cardarea == G.play) then
                 return {
                     chips = card.edition.extra
                 }
