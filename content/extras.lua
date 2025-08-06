@@ -277,36 +277,6 @@ SMODS.Joker { -- Poor Bonus
     end
 }
 
-local emplace_ref = CardArea.emplace
----@diagnostic disable-next-line: duplicate-set-field
-function CardArea.emplace(self, card, location, stay_flipped)
-local joker = SMODS.find_card("j_mode_poor_bonus")
-    if next(joker) and self == G.consumeables then
-        G.hand:change_size(-joker[1].ability.extra.h_mod)
-    end
-    return emplace_ref(self, card, location, stay_flipped)
-end
-
-local remove = Card.remove
----@diagnostic disable-next-line: duplicate-set-field
-function Card.remove(self)
-    local joker = SMODS.find_card("j_mode_poor_bonus")
-    if next(joker) and self.area == G.consumeables then
-        G.hand:change_size(joker[1].ability.extra.h_mod)
-    end
-    return remove(self)
-end
-
-local use_consumeable_ref = Card.use_consumeable
----@diagnostic disable-next-line: duplicate-set-field
-function Card.use_consumeable(self,area,copier)
-    local joker = SMODS.find_card("j_mode_poor_bonus")
-    if next(joker) then
-        G.hand:change_size(joker[1].ability.extra.h_mod)
-    end
-    return use_consumeable_ref(self,area,copier)
-end
-
 --[[
 SMODS.Joker { -- Mystery Play
     key = "mystery_play",

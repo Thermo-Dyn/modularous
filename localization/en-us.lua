@@ -262,7 +262,7 @@ return {
                     "{C:attention}Face{} cards count as",
                     "{C:attention}Steel{} cards",
                     "Destroyed if {C:attention}Gold{}",
-                    "Cards or Seals are"
+                    "Cards or Seals are acquired"
                 }
             },
             j_mode_cybermat = {

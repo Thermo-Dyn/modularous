@@ -218,3 +218,73 @@ SMODS.current_mod.config_tab = function()
     }
   }
 end
+
+local emplace_ref = CardArea.emplace
+---@diagnostic disable-next-line: duplicate-set-field
+function CardArea.emplace(self, card, location, stay_flipped)
+local joker = SMODS.find_card("j_mode_poor_bonus")
+    if next(joker) and self == G.consumeables then
+        G.hand:change_size(-joker[1].ability.extra.h_mod)
+    end
+    return emplace_ref(self, card, location, stay_flipped)
+end
+
+local remove = Card.remove
+---@diagnostic disable-next-line: duplicate-set-field
+function Card.remove(self)
+    local joker = SMODS.find_card("j_mode_poor_bonus")
+    if next(joker) and self.area == G.consumeables then
+        G.hand:change_size(joker[1].ability.extra.h_mod)
+    end
+    return remove(self)
+end
+
+local use_consumeable_ref = Card.use_consumeable
+---@diagnostic disable-next-line: duplicate-set-field
+function Card.use_consumeable(self,area,copier)
+    local joker = SMODS.find_card("j_mode_poor_bonus")
+    if next(joker) and self.area == G.consumeables then
+        G.hand:change_size(joker[1].ability.extra.h_mod)
+    end
+    return use_consumeable_ref(self,area,copier)
+end
+
+local sellable = Card.can_sell_card
+---@diagnostic disable-next-line: duplicate-set-field
+function Card:can_sell_card(context)
+    if self.ability.mode_now_playing then
+        return false
+    end
+    return sellable(self, context)
+end
+
+local remove_card = Card.remove_from_deck
+---@diagnostic disable-next-line: duplicate-set-field
+function Card:remove_from_deck(from_debuff)
+    remove_card(self, from_debuff)
+    if self.ability.mode_now_playing then
+        SMODS.Stickers.mode_now_playing:apply(self)
+    end
+end
+
+local setcost = Card.set_cost
+---@diagnostic disable-next-line: duplicate-set-field
+function Card:set_cost()
+    setcost(self)
+    if self.ability.mode_now_playing then
+        self.sell_cost = 0
+    end
+end
+
+-- Also from Paperback. Thanks!
+local end_round_ref = end_round
+---@diagnostic disable-next-line: lowercase-global
+function end_round()
+    for _, v in ipairs(G.jokers and G.jokers.cards or {}) do
+        if v.ability.mode_now_playing and G.GAME.blind:get_type() == 'Boss' then
+            MODE_UTIL.destroy_joker(v) -- destroy the joker after boss blind has been defeated
+        end
+    end
+
+    return end_round_ref()
+end

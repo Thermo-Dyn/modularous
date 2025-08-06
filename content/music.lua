@@ -405,7 +405,7 @@ SMODS.Joker { -- Blue Monday
 }
 
 --  Thanks N' for the fix!
-
+--  At some point, I need to get it to show the 2X chips in localization
 SMODS.Edition:take_ownership('foil', -- Blue Monday Foil
     {
         loc_vars = function (self, info_queue, card)
@@ -560,43 +560,3 @@ SMODS.Sticker { -- Now Playing Sticker
         end
     end
 }
-
-local sellable = Card.can_sell_card
----@diagnostic disable-next-line: duplicate-set-field
-function Card:can_sell_card(context)
-    if self.ability.mode_now_playing then
-        return false
-    end
-    return sellable(self, context)
-end
-
-local remove_card = Card.remove_from_deck
----@diagnostic disable-next-line: duplicate-set-field
-function Card:remove_from_deck(from_debuff)
-    remove_card(self, from_debuff)
-    if self.ability.mode_now_playing then
-        SMODS.Stickers.mode_now_playing:apply(self)
-    end
-end
-
-local setcost = Card.set_cost
----@diagnostic disable-next-line: duplicate-set-field
-function Card:set_cost()
-    setcost(self)
-    if self.ability.mode_now_playing then
-        self.sell_cost = 0
-    end
-end
-
--- Also from Paperback. Thanks!
-local end_round_ref = end_round
----@diagnostic disable-next-line: lowercase-global
-function end_round()
-    for _, v in ipairs(G.jokers and G.jokers.cards or {}) do
-        if v.ability.mode_now_playing and G.GAME.blind:get_type() == 'Boss' then
-            MODE_UTIL.destroy_joker(v) -- destroy the joker after boss blind has been defeated
-        end
-    end
-
-    return end_round_ref()
-end
