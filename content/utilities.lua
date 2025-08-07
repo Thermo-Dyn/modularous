@@ -1,8 +1,11 @@
 MODE_UTIL.cfg = SMODS.current_mod.config
 
-SMODS.current_mod.optional_features = {
-    quantum_enhancements = true,
-}
+SMODS.current_mod.optional_features = function ()
+    return {
+        quantum_enhancements = true,
+        cardareas = {deck = true}
+    }
+end
 
 --[[
 

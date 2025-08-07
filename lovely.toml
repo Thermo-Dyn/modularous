@@ -38,3 +38,15 @@ if next(SMODS.find_card("j_mode_quiet")) then
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "check_for_unlock({type = 'run_card_replays'})"
+position = "before"
+payload = '''
+if SMODS.find_card("j_mode_mystery") then
+	draw_card(G.deck, G.play, 1, 'up', nil, pseudorandom_element(G.deck.cards, "mystery_play"))
+end
+'''
+match_indent = true

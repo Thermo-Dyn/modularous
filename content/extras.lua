@@ -167,7 +167,7 @@ SMODS.Joker { -- Quiet, Isn't It?
     end
 }
 
---[[
+
 SMODS.Joker { -- Sonic Screwdriver
     key = "sonic_screwdriver",
     unlocked = true,
@@ -182,9 +182,17 @@ SMODS.Joker { -- Sonic Screwdriver
     loc_vars = function (self, info_queue, card)
     end,
     calculate = function(self, card, context)
+        if context.before then
+            local cards = G.play.cards
+            for _, c in ipairs(cards) do
+                if SMODS.get_enhancements(c).m_steel or SMODS.get_enhancements(c).m_gold then
+                    c:set_debuff(false)
+                end
+            end
+        end
     end
 }
-]]
+
 
 SMODS.Joker { -- Mondassian Upgrade
     key = "mondassian_upgrade",
@@ -277,12 +285,15 @@ SMODS.Joker { -- Poor Bonus
     end
 }
 
---[[
+
 SMODS.Joker { -- Mystery Play
     key = "mystery_play",
     unlocked = true,
     discovered = false,
     atlas = "ModeJokers",
+    config = {
+        extra = { card = nil}
+    },
     rarity = 2,
     blueprint_compat = false,
     eternal_compat = true,
@@ -294,7 +305,8 @@ SMODS.Joker { -- Mystery Play
     calculate = function(self, card, context)
     end
 }
-]]
+
+
 --[[
 SMODS.Joker { -- Smug Jug
     key = "smug_jug",

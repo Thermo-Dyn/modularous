@@ -115,7 +115,6 @@ return {
                     "2 {C:attention}face{} cards, destroy them"
                 }
             },
-
             j_mode_bonden_og_kraka = {
                 name = "Bonden Og Kråka",
                 -- Do not translate this name! Or, *transliterate* it.
@@ -125,7 +124,6 @@ return {
                     "to random cards in {C:attention}deck{}"
                 }
             },
-
             j_mode_electricity = {
                 name = "Electricity",
                 text = {
@@ -134,7 +132,6 @@ return {
                     "a card held in hand"
                 }
             },
-
             j_mode_blue_monday = {
                 name = "Blue Monday",
                 text = {
@@ -230,6 +227,12 @@ return {
                     "gain a random {C:attention}Enhancement{}"
                 }
             },
+            j_mode_joker_cracker = {
+                name = "Joker Cracker 9000",
+                text = {
+                    ""
+                }
+            },
             j_mode_cow_tools = {
                 name = "Cow Tools",
                 text = {
@@ -273,13 +276,40 @@ return {
                     "when scored"
                 }
             },
+            j_mode_sonic_screwdriver = {
+                name = "Sonic Screwdriver",
+                text = {
+                    "Prevents played {C:attention}Gold{}",
+                    "and {C:attention}Steel{} Cards from",
+                    "being {C:attention}debuffed{}"
+                }
+            },
             j_mode_poor_bonus = {
                 name = "Poor Bonus",
                 text = {
                     "{C:attention}+#1#{} Hand size",
                     "{C:attention}-#2#{} per consumable"
                 }
-            }
+            },
+            j_mode_mystery_play = {
+                name = "Mystery Play",
+                text = {
+                    "Each hand play a",
+                    "{C:attention}random{} card from the deck"
+                }
+            },
+            j_mode_el_zoomo = {
+                name = "El Zoomo!",
+                text = {
+                    ""
+                }
+            },
+            j_mode_smug_jug = {
+                name = "Smug Jug",
+                text = {
+                    ""
+                }
+            },
         }
     },
 
@@ -290,7 +320,7 @@ return {
             mode_ui_enable_music = "Enable Music Jokers",
             mode_ui_enable_extra = "Enable Miscellaneous Jokers",
             mode_ui_requires_restart = "Requires Resart",
-            mode_a_discards ="+#1# Discards",
+            mode_k_mystery = "Mystery Card!",
             mode_k_steel = "Upgrade!",
             mode_k_bonus = "Bonus!"
         },
