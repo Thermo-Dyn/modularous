@@ -62,6 +62,7 @@ SMODS.Joker { -- El Zoomo!
             if context.other_card.ability.set == "Enhanced" then
                 card.ability.extra.total = card.ability.extra.total + card.ability.extra.bonus
                 return {
+                    message_card = card,
                     message = localize('k_upgrade_ex'),
                     colour = G.C.MULT
                 }
@@ -327,29 +328,52 @@ SMODS.Joker { -- Mystery Play
     eternal_compat = true,
     perishable_compat = true,
     cost = 7,
-    pos = { x = 9, y = 3 },
-    loc_vars = function (self, info_queue, card)
-    end,
-    calculate = function(self, card, context)
-    end
+    pos = { x = 9, y = 3 }
 }
 
 
---[[
+
 SMODS.Joker { -- Smug Jug
     key = "smug_jug",
     unlocked = true,
     discovered = false,
     atlas = "ModeJokers",
-    rarity = 1,
+    rarity = 2,
+    config = { extra = {
+        bonus = 0.05,
+        total = 1
+    }},
     blueprint_compat = false,
     eternal_compat = true,
     perishable_compat = true,
-    cost = 5,
+    cost = 6,
     pos = { x = 0, y = 4 },
     loc_vars = function (self, info_queue, card)
+        return {vars = { card.ability.extra.total, card.ability.extra.bonus }}
     end,
     calculate = function(self, card, context)
+       if context.individual and context.cardarea == G.play and not context.blueprint then
+            card.ability.extra.total = card.ability.extra.total + card.ability.extra.bonus
+            return {
+                message_card = card,
+                message = localize('k_upgrade_ex'),
+                colour = G.C.CHIPS
+            }
+        end
+        if context.joker_main and card.ability.extra.total > 1 then
+            return {
+                xchips = card.ability.extra.total
+            }
+        end
+        if context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint then
+            if context.beat_boss and card.ability.extra.total > 1 then
+                card.ability.extra.total = 1
+                return {
+                    message = localize('k_reset'),
+                    colour = G.C.CHIPS
+                }
+            end
+        end
     end
 }
-]]
+

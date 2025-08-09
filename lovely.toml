@@ -45,7 +45,7 @@ target = "functions/state_events.lua"
 pattern = "check_for_unlock({type = 'run_card_replays'})"
 position = "before"
 payload = '''
-if next(SMODS.find_card("j_mode_mystery")) then
+if next(SMODS.find_card("j_mode_mystery_play")) then
 	draw_card(G.deck, G.play, 1, 'up', nil, pseudorandom_element(G.deck.cards, "mystery_play"))
 end
 '''

@@ -311,7 +311,10 @@ return {
             j_mode_smug_jug = {
                 name = "Smug Jug",
                 text = {
-                    ""
+                    "Played cards add {X:chips,C:white} X#2# {} Chips",
+                    "to this card when scored",
+                    "Resets each Ante",
+                    "{C:inactive}(Currently {X:chips,C:white} X#1# {C:inactive} Chips){}"
                 }
             },
         }
