@@ -13,8 +13,6 @@ SMODS.Joker { -- Headliner Fix
     perishable_compat = true,
     cost = 8,
     pos = { x = 0, y = 0 },
-    loc_vars = function (self, info_queue, card)
-    end,
     calculate = function(self, card, context)
         if context.individual and context.cardarea == G.play and not context.blueprint then
             if (#context.full_hand == 1 and G.GAME.current_round.hands_played == 0) then

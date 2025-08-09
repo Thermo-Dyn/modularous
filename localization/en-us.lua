@@ -301,7 +301,11 @@ return {
             j_mode_el_zoomo = {
                 name = "El Zoomo!",
                 text = {
-                    ""
+                    "Played {C:attention}Enhanced{} Cards",
+                    "add {X:mult,C:white} X#2# {} Mult to this card",
+                    "when scored",
+                    "Resets each Ante",
+                    "{C:inactive}(Currently {X:mult,C:white} X#1# {C:inactive} Mult){}"
                 }
             },
             j_mode_smug_jug = {
