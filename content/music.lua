@@ -171,17 +171,28 @@ SMODS.Joker { -- Flood
         return { vars = { card.ability.extra.mult, card.ability.extra.change, card.ability.extra.xm, } }
     end,
     calculate = function(self, card, context)
-        if context.cardarea == G.jokers and context.joker_main then
+        if context.before and context.main_eval and not context.blueprint then
             if next(context.poker_hands["Flush"]) then
                 if (context.scoring_name == "Flush") then
                     card.ability.extra.mult = (card.ability.extra.mult) + card.ability.extra.change
+                    return {
+                        message = localize('k_upgrade_ex'),
+                        colour = G.C.MULT
+                    }
                 else
                     card.ability.extra.mult = (card.ability.extra.mult) * card.ability.extra.xm
+                    return {
+                        message = localize('k_upgrade_ex'),
+                        colour = G.C.MULT,
+                        sound = 'multhit2'
+                    }
                 end
-                return {
-                    mult = card.ability.extra.mult
-                }
             end
+        end
+        if context.cardarea == G.jokers and context.joker_main then
+            return {
+                mult = card.ability.extra.mult
+            }
         end
     end
 }
