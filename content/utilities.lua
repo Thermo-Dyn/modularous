@@ -227,6 +227,8 @@ local emplace_ref = CardArea.emplace
 function CardArea.emplace(self, card, location, stay_flipped)
 local joker = SMODS.find_card("j_mode_poor_bonus")
     if next(joker) and self == G.consumeables then
+        --print("-1 hand size!")
+        card.config.emplaced = true
         G.hand:change_size(-joker[1].ability.extra.h_mod)
     end
     return emplace_ref(self, card, location, stay_flipped)
@@ -236,21 +238,21 @@ local remove = Card.remove
 ---@diagnostic disable-next-line: duplicate-set-field
 function Card.remove(self)
     local joker = SMODS.find_card("j_mode_poor_bonus")
-    if next(joker) and self.area == G.consumeables then
+    if next(joker) and self.config.emplaced then
         G.hand:change_size(joker[1].ability.extra.h_mod)
     end
     return remove(self)
 end
 
-local use_consumeable_ref = Card.use_consumeable
+--[[ local use_consumeable_ref = Card.use_consumeable
 ---@diagnostic disable-next-line: duplicate-set-field
-function Card.use_consumeable(self,area,copier)
+function Card:use_consumeable(area,copier)
     local joker = SMODS.find_card("j_mode_poor_bonus")
-    if next(joker) and self.area == G.consumeables then
+    if next(joker) and self.added_to_deck then
         G.hand:change_size(joker[1].ability.extra.h_mod)
     end
     return use_consumeable_ref(self,area,copier)
-end
+end ]]
 
 local sellable = Card.can_sell_card
 ---@diagnostic disable-next-line: duplicate-set-field
