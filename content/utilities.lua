@@ -89,6 +89,7 @@ function MODE_UTIL.is_music(card)
 end
 
 function MODE_UTIL.arrays_equal(a, b)
+    if #a ~= #b then return false end
     for i = 1, #a do
         if a[i] ~= b[i] then
             return false
@@ -165,9 +166,160 @@ function MODE_UTIL.check_joker_position(card)
     end
 end
 
+local function calc_set(set_table)
+    local ret = {}
+    for i, c in ipairs(set_table) do
+        if i == 1 then
+            ret[1] = c
+            goto continue
+        end
+        if c == ret[i-1] then
+            ret[#ret+1] = c
+            goto continue
+        end
+        if (i+1) <= #set_table then
+            if c == set_table[i+1] then
+                ret[#ret+1] = c
+                goto continue
+            end
+        end
+        ::continue::
+    end
+    if #ret < 2 then
+        return 0
+    end
+    return #ret
+end
+
+local function calc_run(run_table)
+    local ret = 0
+    local run_scored = {}
+    for i = 1, #run_table, 1 do
+        local seen = {}
+            for j = i, #run_table, 1 do
+                if seen[run_table[i]] then
+                    goto con
+                else
+                    seen[#seen+1] = run_table[j]
+                end
+            end
+        ::con::
+        if #seen < 3 then
+            goto con2
+        end
+        table.sort(seen)
+        if #seen == (seen[#seen] - seen[1] + 1) then
+            if next(run_scored) then table.remove(run_scored, #run_scored) end
+            if MODE_UTIL.arrays_equal(run_scored, seen) then
+                goto con2
+            end
+            run_scored = seen
+            ret = ret + #seen
+        end
+        ::con2::
+    end
+    return ret
+end
+
+
+function MODE_UTIL.calculate_cribbage_score(card_table)
+    local ret = 0
+    if not next(card_table) then
+        return ret
+    end
+    if card_table[1] == 11 then
+        ret = ret + 1
+    end
+    local set_table = calc_set(card_table)
+    local run_table = calc_run(card_table)
+    ret = ret + set_table + run_table
+    if MODE_UTIL.sum_array(card_table, true) == 15 or MODE_UTIL.sum_array(card_table, true) == 31 then
+        ret = ret + 1
+    end
+    return ret
+end
+
+function MODE_UTIL.sum_array(table, cards)
+    local sum = 0
+    for i = 1, #table, 1 do
+        if cards then
+            if table[i] == 14 then
+                sum = sum + 1
+            elseif table[i] > 10 then
+                sum = sum + 10
+            else
+                sum = sum + table[i]
+            end
+        else
+            sum = sum + table[i]
+        end
+    end
+    return sum
+end
+
+function MODE_UTIL.spread_flesh(card, enhancement)
+    local index = 0
+    for i, c in ipairs(G.hand.cards) do
+        if c == card then
+            index = i
+        end
+    end
+    if G.hand.cards[index - 1] and not MODE_UTIL.is_flesh(G.hand.cards[index - 1]) then
+        G.hand.cards[index - 1]:set_ability(enhancement or 'm_mode_flesh_zygote', nil, true)
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                G.hand.cards[index - 1]:juice_up()
+                play_sound('mode_squish', 0.96 + math.random() * 0.08)
+                return true
+            end
+        }))
+    end
+    if G.hand.cards[index + 1] and not MODE_UTIL.is_flesh(G.hand.cards[index + 1]) then
+        G.hand.cards[index + 1]:set_ability(enhancement or 'm_mode_flesh_zygote', nil, true)
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                G.hand.cards[index + 1]:juice_up()
+                play_sound('mode_squish', 0.96 + math.random() * 0.08)
+                return true
+            end
+        }))
+    end
+end
+
+function MODE_UTIL.upgrade_flesh(card, enhancements)
+    local enhancement = pseudorandom_element(enhancements, "XBPGH")
+    print(enhancement)
+    if type(enhancement) == "string" then
+        card:set_ability(enhancement, nil, true)
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                card:juice_up()
+                play_sound('mode_squish', 0.96 + math.random() * 0.08)
+                return true
+            end
+        }))
+    end
+
+
+end
+
+function MODE_UTIL.is_flesh(card)
+    local center = type(card) == "string"
+        and G.P_CENTERS[card]
+        or (card.config and card.config.center)
+    if not center then
+        return false
+    end
+
+    -- If the center has the Flesh pool in its definition
+    if center.pools and center.pools.Flesh then
+        return true
+    end
+end
 
 -- Config UI, thanks paperback!
 -- Create config UI
+---@diagnostic disable-next-line: duplicate-set-field
 SMODS.current_mod.config_tab = function()
   return {
     n = G.UIT.ROOT,
@@ -222,6 +374,20 @@ SMODS.current_mod.config_tab = function()
   }
 end
 
+-- Thanks Kirbio from UnStable!
+--Hook into is_face to account for Eye Flesh
+local card_isfaceref = Card.is_face
+---@diagnostic disable-next-line: duplicate-set-field
+function Card:is_face(from_boss)
+    if self.debuff and not from_boss then return end
+	
+	if SMODS.has_enhancement(self, 'm_mode_flesh_eye') then
+		return true
+	end
+	
+	return card_isfaceref(self, from_boss)
+end
+
 local emplace_ref = CardArea.emplace
 ---@diagnostic disable-next-line: duplicate-set-field
 function CardArea.emplace(self, card, location, stay_flipped)
@@ -243,16 +409,6 @@ function Card.remove(self)
     end
     return remove(self)
 end
-
---[[ local use_consumeable_ref = Card.use_consumeable
----@diagnostic disable-next-line: duplicate-set-field
-function Card:use_consumeable(area,copier)
-    local joker = SMODS.find_card("j_mode_poor_bonus")
-    if next(joker) and self.added_to_deck then
-        G.hand:change_size(joker[1].ability.extra.h_mod)
-    end
-    return use_consumeable_ref(self,area,copier)
-end ]]
 
 local sellable = Card.can_sell_card
 ---@diagnostic disable-next-line: duplicate-set-field

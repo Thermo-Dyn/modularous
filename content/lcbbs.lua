@@ -326,3 +326,378 @@ SMODS.Joker{ -- Memo Pad
         end
     end
 }
+
+SMODS.Joker { -- Cribbage
+    key = "cribbage",
+    config = {
+        extra = {
+            mult = 0,
+        }
+    },
+    pos = {
+        x = 7,
+        y = 1
+    },
+    pools = {
+        lcbbs = true
+    },
+    cost = 6,
+    rarity = 2,
+    blueprint_compat = true,
+    eternal_compat = true,
+    unlocked = true,
+    discovered = false,
+    atlas = 'ModeJokers',
+
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue+1] = { key = "mode_cribbage_rules", set = "Other" }
+        return { vars = { card.ability.extra.mult } }
+    end,
+
+    calculate = function(self, card, context)
+        if context.before then
+            if not context.blueprint_card then
+                local crb_array = {}
+                for index, c in ipairs(G.play.cards) do
+                    table.insert(crb_array, index, c:get_id())
+                end
+                card.ability.extra.mult = card.ability.extra.mult + MODE_UTIL.calculate_cribbage_score(crb_array)
+                return {
+                    message = localize('k_upgrade_ex'),
+                    colour = G.C.ORANGE
+                }
+            end
+        end
+        -- if context.individual and context.cardarea == G.play and not context.blueprint_card then
+        --     card.ability.extra.crb_array[#card.ability.extra.crb_array + 1] = context.other_card:get_id()
+        -- end
+        if context.joker_main then
+            return {
+                mult = card.ability.extra.mult
+            }
+        end
+        if context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint then
+            if context.beat_boss and card.ability.extra.mult > 0 then
+                card.ability.extra.mult = 0
+                return {
+                    message = localize('k_reset'),
+                    colour = G.C.MULT
+                }
+            end
+        end
+    end
+}
+
+SMODS.Joker { -- J'OKER: The Hidden Path
+    key = "xbpgh",
+    pos = {x = 8, y = 1},
+    pools = {lcbbs = true},
+    in_pool = function(self, args)
+        for _, v in ipairs(G.playing_cards or {}) do
+            if MODE_UTIL.is_flesh(v) then
+                return true
+            end
+        end
+    end,
+    cost = 7,
+    rarity = 2,
+    blueprint_compat = false,
+    eternal_compat = true,
+    unlocked = true,
+    discovered = false,
+    atlas = 'ModeJokers',
+
+    loc_vars = function (self, info_queue, card)
+        info_queue[#info_queue+1] = G.P_CENTERS.m_mode_flesh_zygote
+    end,
+
+    calculate = function (self, card, context)
+        if context.before and context.main_eval and not context.blueprint then
+            local faces = 0
+            for _, scored_card in ipairs(context.scoring_hand) do
+                if SMODS.has_enhancement(scored_card, "m_steel") then
+                    faces = faces + 1
+                    scored_card:set_ability('m_mode_flesh_zygote', nil, true)
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            scored_card:juice_up()
+                            return true
+                        end
+                    }))
+                end
+            end
+            if faces > 0 then
+                return {
+                    message = localize('k_flesh'),
+                    colour = G.C.MULT
+                }
+            end
+        end
+    end
+}
+
+SMODS.Enhancement { -- Zygote
+    pools = {
+        Flesh = true
+    },
+    in_pool = function (self, args)
+        return false
+    end,
+    key = 'flesh_zygote',
+    pos = { x = 0, y = 0 },
+    atlas = "ModeEnhancements",
+    config = { extra = { active = false}},
+    replace_base_card = true,
+    no_rank = true,
+    no_suit = true,
+    always_scores = true,
+    calculate = function (self, card, context)
+        if context.main_scoring and context.cardarea == G.play and card.ability.extra.active then
+            MODE_UTIL.upgrade_flesh(card, {'m_mode_flesh_myofibril', 'm_mode_flesh_skin', 'm_mode_flesh_cartilage'})
+        end
+        if context.main_scoring and context.cardarea == G.hand and card.ability.extra.active then
+            MODE_UTIL.spread_flesh(card, 'm_mode_flesh_zygote')
+        end
+        if context.after then
+            card.ability.extra.active = true
+        end
+    end
+}
+
+SMODS.Enhancement { -- Myofibril
+    pools = {
+        Flesh = true
+    },
+    in_pool = function (self, args)
+        return false
+    end,
+    key = 'flesh_myofibril',
+    pos = { x = 1, y = 0 },
+    atlas = "ModeEnhancements",
+    config = { mult = 5, extra = {active = false}},
+    replace_base_card = true,
+    no_rank = true,
+    no_suit = true,
+    always_scores = true,
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.mult}}
+    end,
+    calculate = function (self, card, context)
+        if context.main_scoring and context.cardarea == G.play and card.ability.extra.active then
+            MODE_UTIL.upgrade_flesh(card, {'m_mode_flesh_skeletal', 'm_mode_flesh_smooth', 'm_mode_flesh_fat', -1})
+        end
+        if context.main_scoring and context.cardarea == G.hand and card.ability.extra.active then
+            MODE_UTIL.spread_flesh(card, 'm_mode_flesh_myofibril')
+        end
+        if context.after then
+            card.ability.extra.active = true
+        end
+    end
+}
+
+SMODS.Enhancement { -- Skeletal
+    pools = {
+        Flesh = true
+    },
+    in_pool = function (self, args)
+        return false
+    end,
+    key = 'flesh_skeletal',
+    pos = { x = 2, y = 0 },
+    atlas = "ModeEnhancements",
+    config = { mult = 20},
+    replace_base_card = true,
+    no_rank = true,
+    no_suit = true,
+    always_scores = true,
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.mult}}
+    end,
+
+}
+
+SMODS.Enhancement { -- Smooth
+    pools = {
+        Flesh = true
+    },
+    in_pool = function (self, args)
+        return false
+    end,
+    key = 'flesh_smooth',
+    pos = { x = 3, y = 0 },
+    atlas = "ModeEnhancements",
+    config = { x_mult = 1.75},
+    replace_base_card = true,
+    no_rank = true,
+    no_suit = true,
+    always_scores = true,
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.x_mult}}
+    end,
+}
+
+SMODS.Enhancement { -- Fat
+    pools = {
+        Flesh = true
+    },
+    in_pool = function (self, args)
+        return false
+    end,
+    key = 'flesh_fat',
+    pos = { x = 4, y = 0 },
+    atlas = "ModeEnhancements",
+    config = { extra = { mult = 12}},
+    replace_base_card = true,
+    no_rank = true,
+    no_suit = true,
+    always_scores = true,
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.mult}}
+    end,
+    calculate = function (self, card, context)
+        if context.initial_scoring_step and context.cardarea == G.play then
+            print("haiii :3")
+            return { mult = card.ability.extra.mult}
+        end
+    end
+}
+
+SMODS.Enhancement { -- Skin
+    pools = {
+        Flesh = true
+    },
+    in_pool = function (self, args)
+        return false
+    end,
+    key = 'flesh_skin',
+    pos = { x = 5, y = 0 },
+    atlas = "ModeEnhancements",
+    config = { x_chips = 1.25, extra = {active = false}},
+    replace_base_card = true,
+    no_rank = true,
+    no_suit = true,
+    always_scores = true,
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.x_chips}}
+    end,
+    calculate = function (self, card, context)
+        if context.main_scoring and context.cardarea == G.play and card.ability.extra.active then
+            MODE_UTIL.upgrade_flesh(card, {'m_mode_flesh_eye','m_mode_flesh_hair',-1})
+        end
+        if context.main_scoring and context.cardarea == G.hand and card.ability.extra.active then
+            MODE_UTIL.spread_flesh(card, 'm_mode_flesh_skin')
+        end
+        if context.after then
+            card.ability.extra.active = true
+        end
+    end
+}
+
+SMODS.Enhancement { -- Eye
+    pools = {
+        Flesh = true
+    },
+    in_pool = function (self, args)
+        return false
+    end,
+    key = 'flesh_eye',
+    pos = { x = 6, y = 0 },
+    atlas = "ModeEnhancements",
+    config = { x_chips = 1.75},
+    replace_base_card = true,
+    no_rank = true,
+    no_suit = true,
+    always_scores = true,
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.x_chips}}
+    end,
+}
+
+SMODS.Enhancement { -- Hair
+    pools = {
+        Flesh = true
+    },
+    in_pool = function (self, args)
+        return false
+    end,
+    key = 'flesh_hair',
+    pos = { x = 7, y = 0 },
+    atlas = "ModeEnhancements",
+    config = { extra = { x_chips = 1.75}},
+    replace_base_card = true,
+    no_rank = true,
+    no_suit = true,
+    always_scores = true,
+    loc_vars = function(self, info_queue, card)
+        return { vars = {card.ability.extra.x_chips}}
+    end,
+    calculate = function (self, card, context)
+        if context.final_scoring_step and context.cardarea == G.play then
+            return {
+                x_chips = card.ability.extra.x_chips
+            }
+        end
+    end
+}
+
+SMODS.Enhancement { -- Cartilage
+    pools = {
+        Flesh = true
+    },
+    in_pool = function (self, args)
+        return false
+    end,
+    key = 'flesh_cartilage',
+    pos = { x = 8, y = 0 },
+    atlas = "ModeEnhancements",
+    config = { bonus = 25},
+    replace_base_card = true,
+    no_rank = true,
+    no_suit = true,
+    always_scores = true,
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.bonus }}
+    end,
+    calculate = function (self, card, context)
+        if context.main_scoring and context.cardarea == G.play and card.ability.extra.active then
+            MODE_UTIL.upgrade_flesh(card, {'m_mode_flesh_bone',-1})
+        end
+        if context.main_scoring and context.cardarea == G.hand and card.ability.extra.active then
+            MODE_UTIL.spread_flesh(card, 'm_mode_flesh_cartilage')
+        end
+        if context.after then
+            card.ability.extra.active = true
+        end
+    end
+}
+
+SMODS.Enhancement { -- Bone
+    pools = {
+        Flesh = true
+    },
+    in_pool = function (self, args)
+        return false
+    end,
+    key = 'flesh_bone',
+    pos = { x = 9, y = 0 },
+    atlas = "ModeEnhancements",
+    config = {bonus = 30, extra = {base = 30, add = 20}},
+    replace_base_card = true,
+    no_rank = true,
+    no_suit = true,
+    always_scores = true,
+    loc_vars = function(self, info_queue, card)
+        return { vars = {card.ability.extra.base, card.ability.extra.add}}
+    end,
+    calculate = function (self, card, context)
+        if context.before and context.cardarea == G.play then
+            local count = 0
+            for _, c in ipairs(G.hand.cards) do
+                if MODE_UTIL.is_flesh(c) then
+                    count = count + 1
+                end
+            end
+            card.ability.bonus = card.ability.extra.add * count
+        end
+    end
+}

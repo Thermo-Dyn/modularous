@@ -15,7 +15,60 @@ return {
                         "{C:dark_edition}+1{} Joker slot",
                         "Joker cannot be sold"
                     }
+            },
+            mode_cribbage_rules = {
+                name = "Rules of Cribbage",
+                text = {
+                    "First played card is a {C:attention}Jack",
+                    "Stack {C:attention}total{} is exactly {C:attention}15{}",
+                    "Stack {C:attention}total{} is exactly {C:attention}31{}",
+                    "Set of {C:attention}2+{} per card",
+                    "Run of {C:attention}3+{} per card, in {C:attention}any{} order"
+                }
+            },
+        },
+        Enhanced = {
+            m_mode_flesh_zygote = {
+                name = "The Flesh",
+                text = {"{C:mult}Spreads{} to other cards", "when held in {C:attention}hand{}", "{C:chips}Specializes{} when scored"}
+            },
+            m_mode_flesh_myofibril = {
+                name = "The Flesh",
+                text = {"{C:mult}+#1#{} Mult", "{C:mult}Spreads{} to other cards", "when held in {C:attention}hand{}", "Sometimes {C:chips}Specializes{}", "when scored"}
+            },
+            m_mode_flesh_skeletal = {
+                name = "The Flesh",
+                text = {"{C:mult}+#1#{} Mult"}
+            },
+            m_mode_flesh_smooth = {
+                name = "The Flesh",
+                text = {"{X:mult,C:white} X#1# {} Mult"}
+            },
+            m_mode_flesh_fat = {
+                name = "The Flesh",
+                text = {"{C:mult}+#1#{} Mult {C:attention}before{} cards are scored"}
+            },
+            m_mode_flesh_cartilage = {
+                name = "The Flesh",
+                text = {"{C:chips}+#1#{} Chips", "{C:mult}Spreads{} to other cards", "when held in {C:attention}hand{}", "Sometimes {C:chips}Calcifies{}", "when scored"}
+            },
+            m_mode_flesh_bone = {
+                name = "The Flesh",
+                text = {"{C:chips}+#1#{} Chips", "Increases by {C:chips}#2#{} for", "all {C:attention}Flesh{} cards held in {C:attention}hand{}"}
+            },
+            m_mode_flesh_skin = {
+                name = "The Flesh",
+                text = {"{X:chips,C:white} X#1# {} Chips", "Sometimes {C:chips}Specializes{}", "when scored"}
+            },
+            m_mode_flesh_eye = {
+                name = "The Flesh",
+                text = {"{X:chips,C:white} X#1# {} Chips", "Counts as a Face Card"}
+            },
+            m_mode_flesh_hair = {
+                name = "The Flesh",
+                text = {"{X:chips,C:white} X#1# {} Chips {C:attention}after{} scoring"}
             }
+
         },
 
         Joker = {
@@ -69,6 +122,23 @@ return {
                     "Copy {C:enhanced}Enhancement{} to all cards",
                     "of next played hand if first played",
                     "hand of round is one {C:enhanced}Enhanced{} card"
+                }
+            },
+            j_mode_cribbage = {
+                name = "Cribbage Joker",
+                text = {
+                    "Gains {C:mult}Mult{} when",
+                    "{C:attention}points{} are scored",
+                    "according to {C:attention}Cribbage{} rules",
+                    "Resets each ante",
+                    "{C:inactive}(Currently {C:mult}+#1#{C:inactive} Mult)"
+                }
+            },
+            j_mode_xbpgh = {
+                name = "J'OKER: The Hidden Path",
+                text = {
+                    "Scored {C:attention}Steel{} Cards become",
+                    "{C:mult}Flesh{} Cards",
                 }
             },
             j_mode_sometimes = {
@@ -329,7 +399,8 @@ return {
             mode_ui_requires_restart = "Requires Resart",
             mode_k_mystery = "Mystery Card!",
             mode_k_steel = "Upgrade!",
-            mode_k_bonus = "Bonus!"
+            mode_k_bonus = "Bonus!",
+            mode_k_flesh = "X'BPGH"
         },
         labels = {
             mode_now_playing = "Now Playing"
