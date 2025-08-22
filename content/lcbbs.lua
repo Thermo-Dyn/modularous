@@ -296,7 +296,7 @@ SMODS.Joker{ -- Memo Pad
     blueprint_compat = false,
     eternal_compat = true,
     unlocked = true,
-    discovered = true,
+    discovered = false,
     atlas = 'ModeJokers',
 
     calculate = function(self, card, context)
@@ -304,13 +304,21 @@ SMODS.Joker{ -- Memo Pad
             if (#context.full_hand == 1 and G.GAME.current_round.hands_played == 0 and context.other_card.ability.set == "Enhanced") then
                 card.ability.extra.enhancement = context.other_card.config.center.key
                 card.ability.extra.trigger = true
+                return {
+                    message = localize('k_mode_write'),
+                    colour = G.C.ORANGE
+                }
             end
         end
 
-        if context.individual and context.cardarea == G.play and not context.blueprint and card.ability.extra.trigger and G.GAME.current_round.hands_played ~= 0 then
-                card.ability.extra.triggered = true
+        if context.before and context.main_eval and not context.blueprint and card.ability.extra.trigger and G.GAME.current_round.hands_played ~= 0 then
+            card.ability.extra.triggered = true
+            for _, c in ipairs(G.play.cards) do
+                c:set_ability(card.ability.extra.enhancement, nil, true)
+            end
             return {
-                context.other_card:set_ability(card.ability.extra.enhancement),
+                message = localize('k_upgrade_ex'),
+                colour = G.C.ORANGE
             }
         end
 
@@ -428,7 +436,7 @@ SMODS.Joker { -- J'OKER: The Hidden Path
             end
             if faces > 0 then
                 return {
-                    message = localize('k_flesh'),
+                    message = localize('k_mode_flesh'),
                     colour = G.C.MULT
                 }
             end

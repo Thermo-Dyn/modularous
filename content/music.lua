@@ -1,7 +1,7 @@
 SMODS.Joker { -- Sometimes
     key = 'sometimes',
     unlocked = true,
-    discovered = true,
+    discovered = false,
     config = {
         extra = {
             odds = 3
@@ -154,7 +154,8 @@ SMODS.Joker { -- Flood
         extra = {
             mult = 0,
             change = 3,
-            xm = 1.5
+            xm = 1.5,
+            max = 50
         }
     },
     atlas = "ModeJokers",
@@ -168,7 +169,7 @@ SMODS.Joker { -- Flood
     cost = 5,
     pos = { x = 9, y = 2 },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.mult, card.ability.extra.change, card.ability.extra.xm, } }
+        return { vars = { card.ability.extra.mult, card.ability.extra.change, card.ability.extra.xm, card.ability.extra.max } }
     end,
     calculate = function(self, card, context)
         if context.before and context.main_eval and not context.blueprint then
@@ -180,7 +181,7 @@ SMODS.Joker { -- Flood
                         colour = G.C.MULT
                     }
                 else
-                    card.ability.extra.mult = (card.ability.extra.mult) * card.ability.extra.xm
+                    card.ability.extra.mult = math.min((card.ability.extra.mult * card.ability.extra.xm), 50)
                     return {
                         message = localize('k_upgrade_ex'),
                         colour = G.C.MULT,
@@ -404,7 +405,7 @@ SMODS.Joker { -- Blue Monday
     },
     atlas = "ModeJokers",
     rarity = 2,
-    blueprint_compat = true,
+    blueprint_compat = false,
     eternal_compat = true,
     perishable_compat = true,
     cost = 8,

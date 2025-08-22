@@ -175,7 +175,7 @@ return {
                     "Gains {C:red}+#2#{} Mult when a {C:attention}Flush{} is played",
                     "This Joker's Mult is multiplied by {C:red}#3#{}",
                     "if played hand is not a {C:attention}Flush{} but contains a {C:attention}Flush{}",
-                    "{C:inactive}(Currently {}{C:red}+#1#{}{C:inactive} Mult){}"
+                    "{C:inactive}(Currently {}{C:red}+#1#{}{C:inactive} Mult, Max of {}{C:red}+#4#{}{C:inactive} Mult added each round){}"
                 }
             },
             j_mode_love_will_tear_us_apart = {
@@ -397,10 +397,11 @@ return {
             mode_ui_enable_music = "Enable Music Jokers",
             mode_ui_enable_extra = "Enable Miscellaneous Jokers",
             mode_ui_requires_restart = "Requires Resart",
-            mode_k_mystery = "Mystery Card!",
-            mode_k_steel = "Upgrade!",
-            mode_k_bonus = "Bonus!",
-            mode_k_flesh = "X'BPGH"
+            k_mode_mystery = "Mystery Card!",
+            k_mode_steel = "Upgrade!",
+            k_mode_bonus = "Bonus!",
+            k_mode_flesh = "X'BPGH",
+            k_mode_write = "Added to Memos!"
         },
         labels = {
             mode_now_playing = "Now Playing"

@@ -30,14 +30,13 @@ SMODS.Joker { -- Cow Tools
             end
             if clubs > 0 then
                 return {
-                    message = localize('mode_k_bonus'),
+                    message = localize('k_mode_bonus'),
                     colour = G.C.BLUE
                 }
             end
         end
     end
 }
-
 
 SMODS.Joker { -- El Zoomo!
     key = "el_zoomo",
@@ -115,7 +114,7 @@ SMODS.Joker { -- Jimbo Holding 2 Oranges
         },
         active_effects = {1,1}
     }},
-    blueprint_compat = false,
+    blueprint_compat = true,
     eternal_compat = true,
     perishable_compat = true,
     cost = 6,
@@ -128,9 +127,6 @@ SMODS.Joker { -- Jimbo Holding 2 Oranges
     end,
 
     calculate = function(self, card, context)
-        local chips = 0
-        local mult = 0
-        local xmult = 1
         if context.setting_blind and not context.blueprint_card then
             card.ability.extra.active_effects[1] = pseudorandom("good", 1, 3)
             card.ability.extra.active_effects[2] = pseudorandom("bad", 1, 3)
@@ -208,8 +204,6 @@ SMODS.Joker { -- Sonic Screwdriver
     perishable_compat = true,
     cost = 6,
     pos = { x = 5, y = 3 },
-    loc_vars = function (self, info_queue, card)
-    end,
     calculate = function(self, card, context)
         if context.before then
             local cards = G.play.cards
@@ -237,8 +231,8 @@ SMODS.Joker { -- Mondassian Upgrade
     loc_vars = function (self, info_queue, card)
     end,
     calculate = function(self, card, context)
-        if context.check_enhancement then
-            if SMODS.Ranks[context.other_card.base.value].face then
+        if context.check_enhancement and not context.destroy_card then
+            if SMODS.Ranks[(context.other_card.base.value) or 1].face then
                 return { m_steel = true }
             end
             if context.other_card.ability.effect == "Gold Card" or context.other_card:get_seal(false) == "Gold" or card.ability["paperback_gold_clip"] then
@@ -279,7 +273,7 @@ SMODS.Joker { -- Cybermat
             end
             if faces > 0 then
                 return {
-                    message = localize('k_steel'),
+                    message = localize('k_mode_steel'),
                     colour = G.C.GREY
                 }
             end
@@ -343,7 +337,7 @@ SMODS.Joker { -- Smug Jug
         bonus = 0.05,
         total = 1
     }},
-    blueprint_compat = false,
+    blueprint_compat = true,
     eternal_compat = true,
     perishable_compat = true,
     cost = 6,
