@@ -387,6 +387,54 @@ return {
                     "{C:inactive}(Currently {X:chips,C:white} X#1# {C:inactive} Chips){}"
                 }
             },
+            j_mode_tan_jacket = {
+                name = "The Joker in the Tan Jacket",
+                text = {
+                    "{C:attention}Face{} cards give {C:chips}+#1#{} Chips",
+                    "{C:attention}Face{} cards do not have a rank"
+                }
+            },
+            j_mode_interlopers = {
+                name = "Manual on Interlopers",
+                text = {
+                    "Gains {C:chips}+#1#{} when",
+                    "a {C:attention}conusmable{} is added",
+                    "{C:inactive}(Currently {C:chips}+#2#{C:inactive} Chips)"
+                }
+            },
+            j_mode_faceless_old_joker = {
+                name = "The Faceless Old Joker",
+                text = {
+                    "{C:attention}Destroys{} up to {C:mult}4{} random",
+                    "cards from full deck",
+                    "Adds {C:attention}half{} of chip value destroyed",
+                    "to one random card"
+                }
+            },
+            j_mode_hiram_mcdaniels = {
+                name = "Hiram McDaniels",
+                text = {
+                    "{C:chips}+#1#{} Chips if played",
+                    "hand contains exactly",
+                    "5 {C:attention}Face{} cards"
+                }
+            },
+            j_mode_pizza = {
+                name = "A Slice of Big Rico's",
+                text = {
+                    "{C:mult}+#1#{} Mult if played",
+                    "hand contains",
+                    "{C:hearts}Hearts{} and {C:diamonds}Diamonds{}"
+                }
+            },
+            j_mode_lottery = {
+                name = "Night Vale Lottery",
+                text = {
+                    "{C:attention}Purple{} Seals give {C:money}$#1#{}",
+                    "when discarded",
+                    "and are {C:attention}destroyed{}"
+                }
+            },
         }
     },
 
@@ -395,6 +443,7 @@ return {
             mode_ui_enable_dankpods = "Enable Dankpods Jokers",
             mode_ui_enable_lcbbs = "Enable Zachtronics Jokers",
             mode_ui_enable_music = "Enable Music Jokers",
+            mode_ui_enable_nightvale = "Enable Night Vale Jokers",
             mode_ui_enable_extra = "Enable Miscellaneous Jokers",
             mode_ui_requires_restart = "Requires Resart",
             k_mode_mystery = "Mystery Card!",

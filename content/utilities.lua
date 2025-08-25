@@ -362,6 +362,11 @@ SMODS.current_mod.config_tab = function()
                 ref_value = 'music'
               },
               create_toggle {
+                label = localize('mode_ui_enable_nightvale'),
+                ref_table = MODE_UTIL.config,
+                ref_value = 'nightvale'
+              },
+              create_toggle {
                 label = localize('mode_ui_enable_extra'),
                 ref_table = MODE_UTIL.config,
                 ref_value = 'extra',
@@ -384,18 +389,31 @@ function Card:is_face(from_boss)
 	if SMODS.has_enhancement(self, 'm_mode_flesh_eye') then
 		return true
 	end
-	
+	local id = self:get_id()
+    local rank = SMODS.Ranks[self.base.value]
+    if not id then return end
+    if (id < 0 and rank and rank.face) and next(SMODS.find_card("j_mode_tan_jacket")) then
+        return true
+    end
 	return card_isfaceref(self, from_boss)
+end
+
+local card_getid = Card.get_id
+function Card.get_id(self)
+    if next(SMODS.find_card("j_mode_tan_jacket")) and SMODS.Ranks[self.base.value] and SMODS.Ranks[self.base.value].face then
+        return -math.random(100, 1000000)
+    end
+    return  card_getid(self)
 end
 
 local emplace_ref = CardArea.emplace
 ---@diagnostic disable-next-line: duplicate-set-field
 function CardArea.emplace(self, card, location, stay_flipped)
-local joker = SMODS.find_card("j_mode_poor_bonus")
-    if next(joker) and self == G.consumeables then
+    local poor_bonus = SMODS.find_card("j_mode_poor_bonus")
+    if next(poor_bonus) and self == G.consumeables then
         --print("-1 hand size!")
         card.config.emplaced = true
-        G.hand:change_size(-joker[1].ability.extra.h_mod)
+        G.hand:change_size(-poor_bonus[1].ability.extra.h_mod)
     end
     return emplace_ref(self, card, location, stay_flipped)
 end

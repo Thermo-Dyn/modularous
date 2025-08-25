@@ -17,6 +17,10 @@ if MODE_UTIL.config.music then
     SMODS.load_file("content/music.lua")()
 end
 
+if MODE_UTIL.config.nightvale then
+    assert(SMODS.load_file("content/nightvale.lua"))()
+end
+
 if MODE_UTIL.config.extra then
     assert(SMODS.load_file("content/extras.lua"))()
 end
