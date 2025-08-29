@@ -59,12 +59,16 @@ SMODS.Joker { -- El Zoomo!
     calculate = function(self, card, context)
        if context.individual and context.cardarea == G.play and not context.blueprint then
             if context.other_card.ability.set == "Enhanced" then
-                card.ability.extra.total = card.ability.extra.total + card.ability.extra.bonus
-                return {
+                SMODS.scale_card(card, {
+                ref_table = card.ability.extra, -- the table that has the value you are changing in
+                ref_value = "total", -- the key to the value in the ref_table
+                scalar_value = "bonus", -- the key to the value to scale by, in the ref_table by default,
+                scaling_message = {
                     message_card = card,
                     message = localize('k_upgrade_ex'),
                     colour = G.C.MULT
                 }
+            })
             end
         end
         if context.joker_main and card.ability.extra.total > 1 then
@@ -180,11 +184,15 @@ SMODS.Joker { -- Quiet, Isn't It?
     end,
     calculate = function(self, card, context)
         if context.open_booster and not context.blueprint_card then
-            card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.bonus
-            return {
-                message = localize { type = 'variable', key = 'a_mult', vars = { card.ability.extra.bonus } },
-                colour = G.C.RED,
-            }
+            SMODS.scale_card(card, {
+                ref_table = card.ability.extra, -- the table that has the value you are changing in
+                ref_value = "mult", -- the key to the value in the ref_table
+                scalar_value = "bonus", -- the key to the value to scale by, in the ref_table by default,
+                scaling_message = {
+                    message = localize('k_upgrade_ex'),
+                    colour = G.C.MULT
+                }
+            })
         end
         if context.joker_main then
             return { mult = card.ability.extra.mult }
@@ -347,12 +355,16 @@ SMODS.Joker { -- Smug Jug
     end,
     calculate = function(self, card, context)
        if context.individual and context.cardarea == G.play and not context.blueprint then
-            card.ability.extra.total = card.ability.extra.total + card.ability.extra.bonus
-            return {
-                message_card = card,
-                message = localize('k_upgrade_ex'),
-                colour = G.C.CHIPS
-            }
+            SMODS.scale_card(card, {
+                ref_table = card.ability.extra, -- the table that has the value you are changing in
+                ref_value = "total", -- the key to the value in the ref_table
+                scalar_value = "bonus", -- the key to the value to scale by, in the ref_table by default,
+                scaling_message = {
+                    message_card = card,
+                    message = localize('k_upgrade_ex'),
+                    colour = G.C.CHIPS
+                }
+            })
         end
         if context.joker_main and card.ability.extra.total > 1 then
             return {

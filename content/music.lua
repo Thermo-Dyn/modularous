@@ -175,18 +175,31 @@ SMODS.Joker { -- Flood
         if context.before and context.main_eval and not context.blueprint then
             if next(context.poker_hands["Flush"]) then
                 if (context.scoring_name == "Flush") then
-                    card.ability.extra.mult = (card.ability.extra.mult) + card.ability.extra.change
-                    return {
-                        message = localize('k_upgrade_ex'),
-                        colour = G.C.MULT
-                    }
+                    SMODS.scale_card(card, {
+                        ref_table = card.ability.extra, -- the table that has the value you are changing in
+                        ref_value = "mult", -- the key to the value in the ref_table
+                        scalar_value = "change", -- the key to the value to scale by, in the ref_table by default,
+                        scaling_message = {
+                            message = localize('k_upgrade_ex'),
+                            colour = G.C.MULT
+                        }
+            })
                 else
-                    card.ability.extra.mult = math.min((card.ability.extra.mult * card.ability.extra.xm), 50)
-                    return {
-                        message = localize('k_upgrade_ex'),
-                        colour = G.C.MULT,
-                        sound = 'multhit2'
-                    }
+                    local max = card.ability.extra.max
+                    SMODS.scale_card(card, {
+                        ref_table = card.ability.extra, -- the table that has the value you are changing in
+                        ref_value = "mult", -- the key to the value in the ref_table
+                        scalar_value = "xm", -- the key to the value to scale by, in the ref_table by default,
+                        ---@diagnostic disable-next-line: assign-type-mismatch
+                        operation = function (ref_table, ref_value, initial, change)
+                            ref_table[ref_value] = math.min(initial*change, max)
+                        end,
+                        scaling_message = {
+                            message = localize('k_upgrade_ex'),
+                            colour = G.C.MULT,
+                            sound = 'multhit2'
+                        }
+                    })
                 end
             end
         end
@@ -337,7 +350,8 @@ SMODS.Joker { -- Electricity
     config = {
         extra = {
             bonus = 1.25,
-            odds = 5
+            odds = 5,
+            cards_played = false
         }
     },
     pools = {
@@ -365,13 +379,14 @@ SMODS.Joker { -- Electricity
     calculate = function(self, card, context)
         if context.individual and context.cardarea == G.play then
             if SMODS.get_enhancements(context.other_card)["m_bonus"] == true then
+                card.ability.extra.cards_played = true
                 return {
                     x_chips = card.ability.extra.bonus,
-
                 }
             end
         end
-        if context.destroy_card and SMODS.pseudorandom_probability(card, 'group_0_fe5e38c5', 1, card.ability.extra.odds, 'group_0_fe5e38c5') then
+        if context.destroy_card and card.ability.extra.cards_played and SMODS.pseudorandom_probability(card, 'group_0_fe5e38c5', 1, card.ability.extra.odds, 'group_0_fe5e38c5') then
+            card.ability.extra.cards_played = false
             local target_cards = {}
             for _, card in ipairs(G.hand.cards) do
                 table.insert(target_cards, card)

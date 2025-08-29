@@ -57,7 +57,13 @@ SMODS.Joker { -- "Start Ya Bastard!"
             }
         end
         if context.after and not context.blueprint_card then
-            card.ability.extra.mult = card.ability.extra.mult - card.ability.extra.use
+            SMODS.scale_card(card, {
+                ref_table = card.ability.extra, -- the table that has the value you are changing in
+                ref_value = "mult", -- the key to the value in the ref_table
+                scalar_value = "use", -- the key to the value to scale by, in the ref_table by default,
+                no_message = true,
+                operation = '-'
+            })
             if card.ability.extra.mult <= 0 then
                 SMODS.destroy_cards(card)
             end
@@ -113,7 +119,8 @@ SMODS.Joker { -- JokePod
     },
     config = { extra = {
         chips = 0,
-        add = 35
+        add = 35,
+        reset = 0
     }},
     blueprint_compat = true,
     eternal_compat = true,
@@ -125,12 +132,27 @@ SMODS.Joker { -- JokePod
     end,
     calculate = function(self, card, context)
         if context.before and #G.jokers.cards == 1 and not context.blueprint_card then
-            card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.add
-            return { message = "Upgrade!"}
+            SMODS.scale_card(card, {
+                ref_table = card.ability.extra, -- the table that has the value you are changing in
+                ref_value = "chips", -- the key to the value in the ref_table
+                scalar_value = "add", -- the key to the value to scale by, in the ref_table by default,
+                scaling_message = {
+                    message = localize('k_upgrade_ex'),
+                    colour = G.C.CHIPS
+                }
+            })
         end
         if context.before and #G.jokers.cards > 1 and not context.blueprint_card then
-            card.ability.extra.chips = 0
-            return { message = "Reset!"}
+            SMODS.scale_card(card, {
+                ref_table = card.ability.extra, -- the table that has the value you are changing in
+                ref_value = "chips", -- the key to the value in the ref_table
+                scalar_value = "reset", -- the key to the value to scale by, in the ref_table by default,
+                operation = 'X',
+                scaling_message = {
+                    message = localize('k_reset'),
+                    colour = G.C.RED
+                }
+            })
         end
         if context.joker_main and card.ability.extra.chips > 0 then
             return {chips = card.ability.extra.chips}
@@ -184,6 +206,7 @@ SMODS.Joker { -- JKCELL
         mult = 0,
         add = 3,
         last_index = 0,
+        reset = 0
     } },
     blueprint_compat = true,
     eternal_compat = true,
@@ -197,11 +220,26 @@ SMODS.Joker { -- JKCELL
         if context.before and context.cardarea == G.jokers and not context.blueprint_card then
             local message = ""
             if card.ability.extra.last_index == MODE_UTIL.check_joker_position(card).index then
-                card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.add
-                message = "Upgrade!"
+               SMODS.scale_card(card, {
+                ref_table = card.ability.extra, -- the table that has the value you are changing in
+                ref_value = "mult", -- the key to the value in the ref_table
+                scalar_value = "add", -- the key to the value to scale by, in the ref_table by default,
+                scaling_message = {
+                    message = localize('k_upgrade_ex'),
+                    colour = G.C.MULT
+                }
+            })
             else
-                card.ability.extra.mult = 0
-                message = "Oh no my JKCELL!"
+                SMODS.scale_card(card, {
+                ref_table = card.ability.extra, -- the table that has the value you are changing in
+                ref_value = "mult", -- the key to the value in the ref_table
+                scalar_value = "reset", -- the key to the value to scale by, in the ref_table by default,
+                operation = 'X',
+                scaling_message = {
+                    message = localize('k_reset'),
+                    colour = G.C.RED
+                }
+            })
             end
             G.E_MANAGER:add_event(Event({
                 trigger = 'immediate',

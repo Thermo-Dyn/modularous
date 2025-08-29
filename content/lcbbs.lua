@@ -340,6 +340,7 @@ SMODS.Joker { -- Cribbage
     config = {
         extra = {
             mult = 0,
+            add = 0
         }
     },
     pos = {
@@ -369,11 +370,21 @@ SMODS.Joker { -- Cribbage
                 for index, c in ipairs(G.play.cards) do
                     table.insert(crb_array, index, c:get_id())
                 end
-                card.ability.extra.mult = card.ability.extra.mult + MODE_UTIL.calculate_cribbage_score(crb_array)
-                return {
-                    message = localize('k_upgrade_ex'),
-                    colour = G.C.ORANGE
-                }
+                card.ability.extra.add = MODE_UTIL.calculate_cribbage_score(crb_array)
+                SMODS.scale_card(card, {
+                    ref_table = card.ability.extra, -- the table that has the value you are changing in
+                    ref_value = "mult", -- the key to the value in the ref_table
+                    scalar_value = "add",
+---@diagnostic disable-next-line: assign-type-mismatch
+                    operation = function (ref_table, ref_value, inital, change)
+                        ref_table[ref_value] = inital + change
+                    end,
+                    scaling_message = {
+                        message = localize('k_upgrade_ex'),
+                        colour = G.C.ORANGE
+                    }
+                })
+                card.ability.extra.add = 0
             end
         end
         -- if context.individual and context.cardarea == G.play and not context.blueprint_card then

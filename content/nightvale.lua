@@ -4,7 +4,7 @@ SMODS.Joker { -- Tan Jacket
     discovered = false,
     config = {
         extra = {
-            chips = 25
+            chips = 50
         }
     },
     atlas = "ModeJokers",
@@ -48,11 +48,15 @@ SMODS.Joker { -- Manual On Interlopers
     end,
     calculate = function (self, card, context)
         if context.card_added and context.card.ability.consumeable and not context.blueprint_card then
-            card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chips_add
-            return {
-                message = localize('k_upgrade_ex'),
-                colour = G.C.CHIPS
-            }
+            SMODS.scale_card(card, {
+                ref_table = card.ability.extra, -- the table that has the value you are changing in
+                ref_value = "chips", -- the key to the value in the ref_table
+                scalar_value = "chips_add", -- the key to the value to scale by, in the ref_table by default,
+                scaling_message = {
+                    message = localize('k_upgrade_ex'),
+                    colour = G.C.CHIPS
+                }
+            })
         end
         if context.joker_main then
             return {chips = card.ability.extra.chips}
@@ -92,6 +96,9 @@ SMODS.Joker { -- Faceless old Joker
             end
             SMODS.destroy_cards(cards_to_destroy)
             local recieving_card = pseudorandom_element(G.playing_cards, "faceless")
+            if not recieving_card then
+                return
+            end
             recieving_card.ability.perma_bonus = (recieving_card.ability.perma_bonus or 0) + math.ceil(chips_to_add/2)
             return {
                 message = "killed :)"
