@@ -18,7 +18,7 @@ SMODS.Joker { -- Sometimes
     cost = 7,
     pos = { x = 2, y = 2 },
     set_ability = function(self, card, initial, delay_sprites)
-        card.ability.extra.odds = card.ability.extra.odds or 1
+        card.ability.extra.odds = card.ability.extra.odds or 3
     end,
     loc_vars = function(self, info_queue, card)
         local new_numerator, new_denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'identifier') -- it is suggested to use an identifier so that effects that modify probabilities can target specific values
@@ -27,7 +27,7 @@ SMODS.Joker { -- Sometimes
 
     calculate = function(self, card, context)
         if context.before then
-            if SMODS.pseudorandom_probability(card, 'group_0_e8b20101', G.GAME.probabilities.normal, card.ability.extra.odds, 'group_0_e8b20101') then
+            if SMODS.pseudorandom_probability(card, 'group_0_e8b20101', 1, card.ability.extra.odds, 'group_0_e8b20101') then
                 local created_consumable = false
                 if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
                     created_consumable = true
