@@ -8,7 +8,7 @@
   "badge_text_colour":"4f6367",
   "badge_colour": "fde56c",
   "version": "1.10.0~ALPHA",
-  "dependencies": ["Steamodded (>=1.0.0~BETA-0711a)", "Lovely (>=0.7.1)"],
+  "dependencies": ["Steamodded (>=1.0.0~BETA-0827)", "Lovely (>=0.7.1)"],
   "conflicts": ["Talisman"],
   "priority": 10
 }
