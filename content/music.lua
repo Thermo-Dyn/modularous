@@ -27,7 +27,7 @@ SMODS.Joker { -- Sometimes
 
     calculate = function(self, card, context)
         if context.before then
-            if SMODS.pseudorandom_probability(card, 'group_0_e8b20101', 1, card.ability.extra.odds, 'group_0_e8b20101') then
+            if SMODS.pseudorandom_probability(card, 'Sometimes!', 1, card.ability.extra.odds, 'j_mode_sometimes') then
                 local created_consumable = false
                 if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
                     created_consumable = true

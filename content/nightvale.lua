@@ -205,3 +205,79 @@ SMODS.Joker { -- Night Vale Lottery
         end
     end
 }
+
+SMODS.Joker { -- Dark Planet
+    key = 'dark_planet',
+    unlocked = true,
+    discovered = false,
+    config = {
+        extra = {
+            odds = 3,
+            last_planet = 'c_mode_no_planet',
+            last_name = 'None'
+        }
+    },
+    atlas = "ModeJokers",
+    rarity = 2,
+    blueprint_compat = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    cost = 7,
+    pos = {x = 6, y = 5},
+    loc_vars = function (self, info_queue, card)
+        local new_numerator, new_denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'identifier') -- it is suggested to use an identifier so that effects that modify probabilities can target specific values
+        return { vars = { new_numerator, new_denominator, card.ability.extra.last_name } }
+    end,
+    calculate = function (self, card, context)
+        if context.using_consumeable and context.consumeable.ability.set == "Planet" then
+            card.ability.extra.last_planet = context.consumeable.config.center_key
+            card.ability.extra.last_name = context.consumeable.ability.name
+        end
+        if context.ending_shop and card.ability.extra.last_planet ~= "c_mode_no_planet" then
+            if SMODS.pseudorandom_probability(card, 'Titan', 1, card.ability.extra.odds, 'j_mode_dark_planet') then
+                local created_consumable = false
+                if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+                    created_consumable = true
+                    G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            local consumable_card = create_card('Planet', G.consumeables, nil, nil, nil, nil, card.ability.extra.last_planet, 'mode')
+                            consumable_card:add_to_deck()
+                            G.consumeables:emplace(consumable_card)
+                            G.GAME.consumeable_buffer = 0
+                            return true
+                        end
+                    }))
+                end
+                card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil,
+                    { message = created_consumable and localize('k_plus_planet') or nil, colour = G.C.BLUE })
+            end
+        end
+    end
+}
+
+SMODS.Joker { -- Erika
+    key = 'erika',
+    unlocked = true,
+    discovered = false,
+    config = {
+        extra = {
+            money = 10,
+            chips = 40
+        }
+    },
+    atlas = "ModeJokers",
+    blueprint_compat = true,
+    eternal_compat = true,
+    perishable_compat = true,
+    cost = 10,
+    pos = { x = 7, y = 5},
+    loc_vars = function (self, info_queue, card)
+        return { vars = { card.ability.extra.chips, card.ability.extra.money, card.ability.extra.chips*(math.floor(G.GAME.dollars/10)) } }
+    end,
+    calculate =  function (self, card, context)
+        if context.joker_main and G.GAME.dollars >= card.ability.extra.money then
+            return {chips = card.ability.extra.chips*(math.floor(G.GAME.dollars/10))}
+        end
+    end
+}

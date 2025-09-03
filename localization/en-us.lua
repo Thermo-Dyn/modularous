@@ -92,7 +92,7 @@ return {
                     "Gives {C:money}$#1#{} if played hand has",
                     "alternating dark and light suits",
                     "Gives {C:money}$#2#{} if hand is a straight",
-                    "{C:inactive,s:0.8}(Must play 5 cards for Solitaire){}"
+                    "{C:inactive,s:0.8}(Must play 5 cards for Solitaire)"
                 }
             },
             j_mode_dungeon_complete = {
@@ -146,7 +146,7 @@ return {
                 text = {
                     "{C:green}#1# in #2#{} chance to create",
                     "a {C:tarot}Tarot{} card when hand is played",
-                    "{C:inactive}(must have room){}"
+                    "{C:inactive}(must have room)"
                 }
             },
             j_mode_wild_planet = {
@@ -175,7 +175,7 @@ return {
                     "Gains {C:red}+#2#{} Mult when a {C:attention}Flush{} is played",
                     "This Joker's Mult is multiplied by {C:red}#3#{}",
                     "if played hand is not a {C:attention}Flush{} but contains a {C:attention}Flush{}",
-                    "{C:inactive}(Currently {}{C:red}+#1#{}{C:inactive} Mult, Max of {}{C:red}+#4#{}{C:inactive} Mult added each round){}"
+                    "{C:inactive}(Currently {}{C:red}+#1#{}{C:inactive} Mult, Max of {}{C:red}+#4#{}{C:inactive} Mult added each round)"
                 }
             },
             j_mode_love_will_tear_us_apart = {
@@ -257,7 +257,7 @@ return {
                 text = {
                     "Gains {C:blue}+#2#{} Chips each hand",
                     "resets if another {C:attention}Joker{} is present",
-                    "{C:inactive}(Currently {C:blue}+#1#{C:inactive} Chips){}"
+                    "{C:inactive}(Currently {C:blue}+#1#{C:inactive} Chips)"
                 }
             },
             j_mode_one_grit = {
@@ -273,7 +273,7 @@ return {
                     "Gains {C:red}+#2#{} Mult and {C:attention}shuffles{} Jokers",
                     "when a hand is played",
                     "resets if moved",
-                    "{C:inactive}(Currently {C:red}+#1#{C:inactive} Mult){}"
+                    "{C:inactive}(Currently {C:red}+#1#{C:inactive} Mult)"
                 }
             },
             j_mode_bootleg = {
@@ -317,7 +317,7 @@ return {
                     "When Blind is selected",
                     "randomly chooses a",
                     "{C:attention}Positive{} and {C:attention}Negative{} effect",
-                    "{C:inactive}(Currently {C:attention}#1#{C:inactive} and {C:attention}#2#{C:inactive}){}"
+                    "{C:inactive}(Currently {C:attention}#1#{C:inactive} and {C:attention}#2#{C:inactive})"
                 }
             },
             j_mode_quiet = {
@@ -375,7 +375,7 @@ return {
                     "add {X:mult,C:white} X#2# {} Mult to this card",
                     "when scored",
                     "Resets each Ante",
-                    "{C:inactive}(Currently {X:mult,C:white} X#1# {C:inactive} Mult){}"
+                    "{C:inactive}(Currently {X:mult,C:white} X#1# {C:inactive} Mult)"
                 }
             },
             j_mode_smug_jug = {
@@ -384,7 +384,7 @@ return {
                     "Played cards add {X:chips,C:white} X#2# {} Chips",
                     "to this card when scored",
                     "Resets each Ante",
-                    "{C:inactive}(Currently {X:chips,C:white} X#1# {C:inactive} Chips){}"
+                    "{C:inactive}(Currently {X:chips,C:white} X#1# {C:inactive} Chips)"
                 }
             },
             j_mode_tan_jacket = {
@@ -433,6 +433,23 @@ return {
                     "{C:attention}Purple{} Seals give {C:money}$#1#{}",
                     "when discarded",
                     "and are {C:attention}destroyed{}"
+                }
+            },
+            j_mode_dark_planet = {
+                name = "The Dark Planet",
+                text = {
+                    "{C:green}#1# in #2#{} chance to create",
+                    "the {C:attention}last{} used {C:attention}planet{} card",
+                    "at the end of the {C:attention}shop",
+                    "{C:inactive}(Currently {C:attention}#3#{C:inactive}, must have room)",
+                }
+            },
+            j_mode_erika = {
+                name = "Erika",
+                text = {
+                    "{C:chips}+#1#{} Chips for every",
+                    "{C:money}$#2#{} you have",
+                    "{C:inactive}(Currently {C:chips}+#3#{C:inactive} Chips)"
                 }
             },
         }
