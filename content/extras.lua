@@ -172,25 +172,25 @@ SMODS.Joker { -- Quiet, Isn't It?
     unlocked = true,
     discovered = false,
     atlas = "ModeJokers",
-    config = { extra = {mult = 0, bonus = 7}},
-    rarity = 2,
+    config = { extra = {chips = 0, bonus = 40}},
+    rarity = 1,
     blueprint_compat = true,
     eternal_compat = true,
     perishable_compat = true,
     cost = 6,
     pos = { x = 4, y = 3 },
     loc_vars = function (self, info_queue, card)
-        return { vars = {card.ability.extra.mult, card.ability.extra.bonus}}
+        return { vars = {card.ability.extra.chips, card.ability.extra.bonus}}
     end,
     calculate = function(self, card, context)
         if context.open_booster and not context.blueprint_card then
             SMODS.scale_card(card, {
                 ref_table = card.ability.extra, -- the table that has the value you are changing in
-                ref_value = "mult", -- the key to the value in the ref_table
+                ref_value = "chips", -- the key to the value in the ref_table
                 scalar_value = "bonus", -- the key to the value to scale by, in the ref_table by default,
                 scaling_message = {
                     message = localize('k_upgrade_ex'),
-                    colour = G.C.MULT
+                    colour = G.C.CHIPS
                 }
             })
         end
