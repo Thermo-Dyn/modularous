@@ -323,10 +323,10 @@ return {
             j_mode_quiet = {
                 name = "Quiet, Isn't It?",
                 text = {
-                    "Gains {C:red}+#2#{} Mult when",
+                    "Gains {C:chips}+#2#{} Chips when",
                     "Booster pack is opened,",
                     "Booster packs have {C:attention}0 options",
-                    "{C:inactive}(Currently {C:red}+#1#{C:inactive} Mult)"
+                    "{C:inactive}(Currently {C:chips}+#1#{C:inactive} Chips)"
                 }
             },
             j_mode_mondassian_upgrade = {
