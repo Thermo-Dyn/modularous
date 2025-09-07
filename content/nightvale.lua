@@ -134,7 +134,9 @@ SMODS.Joker { -- Hiram McDaniels
                     face_count = face_count + 1
                 end
             end
-            return { chips = card.ability.extra.chips}
+            if face_count == 5 then
+                return { chips = card.ability.extra.chips}
+            end
         end
     end
 }
