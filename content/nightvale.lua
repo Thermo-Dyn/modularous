@@ -12,7 +12,7 @@ SMODS.Joker { -- Tan Jacket
     blueprint_compat = true,
     eternal_compat = true,
     perishable_compat = true,
-    cost = 8,
+    cost = 7,
     pos = { x = 0, y = 5 },
     loc_vars = function(self, info_queue, card)
         return { vars = {card.ability.extra.chips}}
@@ -41,7 +41,7 @@ SMODS.Joker { -- Manual On Interlopers
     blueprint_compat = true,
     eternal_compat = true,
     perishable_compat = true,
-    cost = 8,
+    cost = 5,
     pos = { x = 1, y = 5 },
     loc_vars = function(self, info_queue, card)
         return { vars = {card.ability.extra.chips_add, card.ability.extra.chips}}
@@ -78,7 +78,7 @@ SMODS.Joker { -- Faceless old Joker
     blueprint_compat = true,
     eternal_compat = true,
     perishable_compat = true,
-    cost = 8,
+    cost = 6,
     pos = { x = 2, y = 5 },
     loc_vars = function(self, info_queue, card)
         return { vars = {card.ability.extra.chips_add, card.ability.extra.chips}}
@@ -113,7 +113,6 @@ SMODS.Joker { -- Hiram McDaniels
     discovered = false,
     config = {
         extra = {
-            faces = 0,
             chips = 120
         }
     },
@@ -122,19 +121,19 @@ SMODS.Joker { -- Hiram McDaniels
     blueprint_compat = true,
     eternal_compat = true,
     perishable_compat = true,
-    cost = 8,
+    cost = 5,
     pos = { x = 3, y = 5 },
     loc_vars = function(self, info_queue, card)
         return { vars = {card.ability.extra.chips}}
     end,
     calculate = function (self, card, context)
-        if context.individual and context.cardarea == G.play and not context.blueprint_card then
-            if context.other_card:is_face() then
-                card.ability.extra.faces = card.ability.extra.faces + 1
+        if context.joker_main then
+            local face_count = 0
+            for _, v in ipairs(G.play.cards) do
+                if v:is_face() then
+                    face_count = face_count + 1
+                end
             end
-        end
-        if context.joker_main and card.ability.extra.faces == 5 then
-            card.ability.extra.faces = 0
             return { chips = card.ability.extra.chips}
         end
     end
@@ -156,7 +155,7 @@ SMODS.Joker { -- Pizza
     blueprint_compat = true,
     eternal_compat = true,
     perishable_compat = true,
-    cost = 8,
+    cost = 4,
     pos = { x = 4, y = 5 },
     loc_vars = function(self, info_queue, card)
         return { vars = {card.ability.extra.mult}}
@@ -192,7 +191,7 @@ SMODS.Joker { -- Night Vale Lottery
     blueprint_compat = false,
     eternal_compat = true,
     perishable_compat = true,
-    cost = 8,
+    cost = 6,
     pos = { x = 5, y = 5 },
     loc_vars = function(self, info_queue, card)
         return { vars = {card.ability.extra.dollars}}

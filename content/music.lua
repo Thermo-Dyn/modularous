@@ -192,7 +192,7 @@ SMODS.Joker { -- Flood
                         scalar_value = "xm", -- the key to the value to scale by, in the ref_table by default,
                         ---@diagnostic disable-next-line: assign-type-mismatch
                         operation = function (ref_table, ref_value, initial, change)
-                            ref_table[ref_value] = math.min(initial*change, max)
+                            ref_table[ref_value] = initial*(math.min(change, max))
                         end,
                         scaling_message = {
                             message = localize('k_upgrade_ex'),
