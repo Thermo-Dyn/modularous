@@ -30,8 +30,8 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "card.lua"
-pattern = "local _size = self.ability.extra"
-position = "after"
+pattern = "for i = 1, _size do"
+position = "before"
 payload = '''
 if next(SMODS.find_card("j_mode_quiet")) then
 	_size = 0
@@ -46,7 +46,7 @@ pattern = "check_for_unlock({type = 'run_card_replays'})"
 position = "before"
 payload = '''
 if next(SMODS.find_card("j_mode_mystery_play")) then
-	draw_card(G.deck, G.play, 1, 'up', nil, pseudorandom_element(G.deck.cards, "mystery_play"))
+	draw_card(G.deck, G.play, 10000, 'up', nil, pseudorandom_element(G.deck.cards, "mystery_play"))
 end
 '''
 match_indent = true

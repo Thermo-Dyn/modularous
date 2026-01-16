@@ -195,7 +195,7 @@ SMODS.Joker { -- Quiet, Isn't It?
             })
         end
         if context.joker_main then
-            return { mult = card.ability.extra.mult }
+            return { chips = card.ability.extra.chips }
         end
     end
 }
@@ -224,7 +224,7 @@ SMODS.Joker { -- Sonic Screwdriver
     end
 }
 
-
+--[[
 SMODS.Joker { -- Mondassian Upgrade
     key = "mondassian_upgrade",
     unlocked = true,
@@ -249,7 +249,7 @@ SMODS.Joker { -- Mondassian Upgrade
         end
     end
 }
-
+]]
 
 SMODS.Joker { -- Cybermat
     key = "cybermat",
