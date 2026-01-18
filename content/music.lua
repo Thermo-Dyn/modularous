@@ -154,7 +154,7 @@ SMODS.Joker { -- Flood
         extra = {
             mult = 0,
             change = 3,
-            xm = 1.5,
+            xm = 0.5,
             max = 50
         }
     },
@@ -169,7 +169,7 @@ SMODS.Joker { -- Flood
     cost = 5,
     pos = { x = 9, y = 2 },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.mult, card.ability.extra.change, card.ability.extra.xm, card.ability.extra.max } }
+        return { vars = { card.ability.extra.mult, card.ability.extra.change, (1 + card.ability.extra.xm), card.ability.extra.max } }
     end,
     calculate = function(self, card, context)
         if context.before and context.main_eval and not context.blueprint then
@@ -177,22 +177,22 @@ SMODS.Joker { -- Flood
                 if (context.scoring_name == "Flush") then
                     SMODS.scale_card(card, {
                         ref_table = card.ability.extra, -- the table that has the value you are changing in
-                        ref_value = "mult", -- the key to the value in the ref_table
-                        scalar_value = "change", -- the key to the value to scale by, in the ref_table by default,
+                        ref_value = "mult",             -- the key to the value in the ref_table
+                        scalar_value = "change",        -- the key to the value to scale by, in the ref_table by default,
                         scaling_message = {
                             message = localize('k_upgrade_ex'),
                             colour = G.C.MULT
                         }
-            })
+                    })
                 else
                     local max = card.ability.extra.max
                     SMODS.scale_card(card, {
                         ref_table = card.ability.extra, -- the table that has the value you are changing in
-                        ref_value = "mult", -- the key to the value in the ref_table
-                        scalar_value = "xm", -- the key to the value to scale by, in the ref_table by default,
+                        ref_value = "mult",             -- the key to the value in the ref_table
+                        scalar_value = "xm",            -- the key to the value to scale by, in the ref_table by default,
                         ---@diagnostic disable-next-line: assign-type-mismatch
-                        operation = function (ref_table, ref_value, initial, change)
-                            ref_table[ref_value] = initial*(math.min(change, max))
+                        operation = function(ref_table, ref_value, initial, change)
+                            ref_table[ref_value] = initial + (math.min(change * initial, max))
                         end,
                         scaling_message = {
                             message = localize('k_upgrade_ex'),
@@ -435,10 +435,10 @@ SMODS.Joker { -- Blue Monday
 --  At some point, I need to get it to show the 2X chips in localization
 SMODS.Edition:take_ownership('foil', -- Blue Monday Foil
     {
-        loc_vars = function (self, info_queue, card)
-            return { vars = {card.edition.extra}}
+        loc_vars = function(self, info_queue, card)
+            return { vars = { card.edition.extra } }
         end,
-        config = { extra = 50},
+        config = { extra = 50 },
         calculate = function(self, card, context)
             local joker = next(SMODS.find_card("j_mode_blue_monday"))
             if joker and (context.post_joker or (context.main_scoring and context.cardarea == G.play)) then
