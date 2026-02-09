@@ -155,7 +155,7 @@ SMODS.Joker { -- Flood
             mult = 0,
             change = 3,
             xm = 0.5,
-            max = 50
+            max = 10
         }
     },
     atlas = "ModeJokers",

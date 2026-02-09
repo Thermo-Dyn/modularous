@@ -172,7 +172,7 @@ SMODS.Joker { -- Quiet, Isn't It?
     unlocked = true,
     discovered = false,
     atlas = "ModeJokers",
-    config = { extra = {chips = 0, bonus = 40}},
+    config = { extra = {chips = 0, bonus = 10}},
     rarity = 1,
     blueprint_compat = true,
     eternal_compat = true,
