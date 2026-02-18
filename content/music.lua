@@ -159,14 +159,14 @@ SMODS.Joker { -- Flood
         }
     },
     atlas = "ModeJokers",
-    rarity = 1,
+    rarity = 2,
     blueprint_compat = true,
     eternal_compat = true,
     perishable_compat = true,
     pools = {
         Music = true
     },
-    cost = 5,
+    cost = 6,
     pos = { x = 9, y = 2 },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.mult, card.ability.extra.change, (1 + card.ability.extra.xm), card.ability.extra.max } }
