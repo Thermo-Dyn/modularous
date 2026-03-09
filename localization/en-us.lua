@@ -175,7 +175,7 @@ return {
                     "Gains {C:red}+#2#{} Mult when a {C:attention}Flush{} is played",
                     "This Joker's Mult is multiplied by {C:red}#3#{}",
                     "if played hand is not a {C:attention}Flush{} but contains a {C:attention}Flush{}",
-                    "{C:inactive}(Currently {}{C:red}+#1#{}{C:inactive} Mult, Max of {}{C:red}+#4#{}{C:inactive} Mult added each round)"
+                    "{C:inactive}(Currently {}{C:red}+#1#{}{C:inactive} Mult, Max of {}{C:red}+#4#{}{C:inactive} Mult added each hand)"
                 }
             },
             j_mode_love_will_tear_us_apart = {
@@ -249,7 +249,7 @@ return {
                     "Leftmost slot: {C:blue}+#1#{} Chips",
                     "Rightmost slot: {X:red,C:white}X#3#{} Mult",
                     "Otherwise: {C:red}+#2#{} Mult",
-                    "{C:inactive,s:0.8}(If Joker slots are not filled, it gives +{C:red,s:0.8}#2#{C:inactive,s:0.8} Mult)"
+                    "{C:inactive,s:0.8}(If Joker slots are not filled, it gives {C:red,s:0.8}+#2#{C:inactive,s:0.8} Mult)"
                 }
             },
             j_mode_jokepod = {

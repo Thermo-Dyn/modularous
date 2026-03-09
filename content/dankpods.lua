@@ -17,7 +17,6 @@ SMODS.Joker { -- Headliner Fix
         if context.individual and context.cardarea == G.play and not context.blueprint then
             if (#context.full_hand == 1 and G.GAME.current_round.hands_played == 0) then
                 card.ability.extra.pinned_card = context.other_card.sort_id
-                print(card.ability.extra.pinned_card)
             end
         end
         if context.end_of_round then
