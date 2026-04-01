@@ -152,7 +152,7 @@ return {
             j_mode_wild_planet = {
                 name = "Wild Planet",
                 text = {
-                    "Upgrade {C:planet}Three Of A Kind{}",
+                    "{C:green}#1# in #2#{} chance to upgrade {C:planet}Three Of A Kind{}",
                     "If scoring hand contains a {C:attention}3{} or {C:attention}5{}"
                 }
             },

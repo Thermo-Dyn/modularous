@@ -21,7 +21,7 @@ SMODS.Joker { -- Sometimes
         card.ability.extra.odds = card.ability.extra.odds or 3
     end,
     loc_vars = function(self, info_queue, card)
-        local new_numerator, new_denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'identifier') -- it is suggested to use an identifier so that effects that modify probabilities can target specific values
+        local new_numerator, new_denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'identifier')
         return { vars = { new_numerator, new_denominator } }
     end,
 
@@ -51,21 +51,29 @@ SMODS.Joker { -- Sometimes
 
 SMODS.Joker { -- Wild Planet
     key = 'wild_planet',
-
+    config = {
+        extra = {
+            odds = 2
+        }
+    },
     pools = {
         Music = true
     },
     unlocked = true,
     discovered = false,
     atlas = "ModeJokers",
-    rarity = 1,
+    rarity = 2,
     blueprint_compat = true,
     eternal_compat = true,
     perishable_compat = true,
     cost = 5,
     pos = { x = 6, y = 2 },
+    loc_vars = function(self, info_queue, card)
+        local new_numerator, new_denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'identifier')
+        return { vars = { new_numerator, new_denominator } }
+    end,
     calculate = function(self, card, context)
-        if context.before then
+        if context.before and SMODS.pseudorandom_probability(card, '53 Miles', 1, card.ability.extra.odds, 'j_mode_wild_planet') then
             for i, c in ipairs(context.scoring_hand) do
                 if (c:get_id() == 3) or (c:get_id()) == 5 then
                     return {
